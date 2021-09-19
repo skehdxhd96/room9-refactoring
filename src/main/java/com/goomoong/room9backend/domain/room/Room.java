@@ -84,6 +84,10 @@ public class Room extends BaseEntity {
                 .build();
     }
 
+    public void withGood(Boolean likeStatus) {
+        this.liked = likeStatus == true ? (this.liked + 1) : (this.liked - 1);
+    }
+
     public void modifyRoom(UpdateRequestRoomDto request) {
 
         this.limited = request.getLimit();

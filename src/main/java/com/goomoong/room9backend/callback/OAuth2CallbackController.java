@@ -39,7 +39,7 @@ public class OAuth2CallbackController {
         MultiValueMap<String, String> tokenRequest = new LinkedMultiValueMap<>();
         tokenRequest.add("grant_type", "authorization_code");
         tokenRequest.add("client_id", "64dfaa62a542bcefe16d09bd77b6ca8c");
-        tokenRequest.add("redirect_uri", "https://api.room9.shop/oauth2/callback/kakao");
+        tokenRequest.add("redirect_uri", "http://localhost:8080/oauth2/callback/kakao");
         tokenRequest.add("code", code);
 
         try {

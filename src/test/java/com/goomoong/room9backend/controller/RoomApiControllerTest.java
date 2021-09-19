@@ -574,4 +574,84 @@ public class RoomApiControllerTest {
                         )
                 ));
     }
+
+    @Test
+    @DisplayName("숙소 좋아요(찜)")
+    public void roomWithGood() throws Exception{
+        //given
+        roomData.liked rled = roomData.liked.builder().currentLiked(4).currentStatus(true).build();
+
+        given(roomService.AboutGoodToRoom(any(), any())).willReturn(rled);
+
+        //when
+        ResultActions results = mvc.perform(RestDocumentationRequestBuilders.post("/room/good/{roomId}", 1L)
+                .principal(new UsernamePasswordAuthenticationToken(CustomUserDetails.create(user), null))
+                .header("Authorization", "Bearer accessToken"));
+
+        //then
+        results
+                .andDo(print())
+                .andDo(document("room-good",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        requestHeaders(
+                                headerWithName("Authorization").description("카카오 사용자 Bearer Token")
+                        ),
+                        pathParameters(
+                                parameterWithName("roomId").description("숙소 아이디")
+                        ),
+                        responseFields(
+                                fieldWithPath("currentLiked").type(JsonFieldType.NUMBER).description("현재 좋아요 수"),
+                                fieldWithPath("currentStatus").type(JsonFieldType.BOOLEAN).description("내가 좋아요 눌렀는지 여부")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName(value = "내가 찜(좋아요) 한 숙소 리스트")
+    public void getMyWish() throws Exception{
+        //given
+        given(roomService.getRoomWithGood(any())).willReturn(glist);
+
+        //when
+        ResultActions results = mvc.perform(RestDocumentationRequestBuilders.get("/room/MyWish")
+                .principal(new UsernamePasswordAuthenticationToken(CustomUserDetails.create(user), null))
+                .header("Authorization", "Bearer accessToken"));
+
+        //then
+        results
+                .andDo(print())
+                .andDo(document("room-myWish",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        requestHeaders(
+                                headerWithName("Authorization").description("카카오 사용자 Bearer Token")
+                        ),
+                        responseFields(
+                                fieldWithPath("count").type(JsonFieldType.NUMBER).description("총 숙소 개수"),
+                                fieldWithPath("room.[].roomId").type(JsonFieldType.NUMBER).description("숙소 아이디"),
+                                fieldWithPath("room.[].username").type(JsonFieldType.STRING).description("숙소 만든 사람 닉네임"),
+                                fieldWithPath("room.[].title").type(JsonFieldType.STRING).description("숙소 제목"),
+                                fieldWithPath("room.[].location").type(JsonFieldType.STRING).description("숙소 위치"),
+                                fieldWithPath("room.[].limitPeople").type(JsonFieldType.NUMBER).description("제한 인원"),
+                                fieldWithPath("room.[].price").type(JsonFieldType.NUMBER).description("숙소 가격"),
+                                fieldWithPath("room.[].like").type(JsonFieldType.NUMBER).description("숙소에 찍힌 좋아요 수"),
+                                fieldWithPath("room.[].images[].url").type(JsonFieldType.STRING).description("숙소 이미지"),
+                                fieldWithPath("room.[].avgScore").type(JsonFieldType.NUMBER).description("숙소 댓글 평점 평균"),
+                                fieldWithPath("room.[].reviewCount").type(JsonFieldType.NUMBER).description("숙소 댓글 수")
+                        )
+                ))
+                .andExpect(jsonPath("$.count").value(1))
+                .andExpect(jsonPath("$.room[0].roomId").value(1L))
+                .andExpect(jsonPath("$.room[0].username").value("mockusername"))
+                .andExpect(jsonPath("$.room[0].title").value("아메리카노"))
+                .andExpect(jsonPath("$.room[0].location").value("서울"))
+                .andExpect(jsonPath("$.room[0].limitPeople").value(10))
+                .andExpect(jsonPath("$.room[0].price").value(10000))
+                .andExpect(jsonPath("$.room[0].like").value(3))
+                .andExpect(jsonPath("$.room[0].avgScore").value(0.0))
+                .andExpect(jsonPath("$.room[0].reviewCount").value(0))
+                .andExpect(jsonPath("$.room[0].images[0].url").value("https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"))
+                .andExpect(jsonPath("$.room[0].images[1].url").value("https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"));
+    }
 }

@@ -18,10 +18,8 @@ include::{snippets}/review-select/http-request.adoc[]
 
 === Request Fields
 
-=== request fields
-include::{snippets}/review-select/request-fields.adoc[]
 === request parameters
-include::{snippets}/review/select/request-parameters.adoc[]
+include::{snippets}/review-select/request-parameters.adoc[]
 
 
 === HTTP Response

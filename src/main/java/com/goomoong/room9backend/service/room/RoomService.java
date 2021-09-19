@@ -3,11 +3,11 @@ package com.goomoong.room9backend.service.room;
 import com.goomoong.room9backend.domain.review.dto.scoreDto;
 import com.goomoong.room9backend.domain.room.Amenity;
 import com.goomoong.room9backend.domain.room.RoomConfiguration;
-import com.goomoong.room9backend.domain.room.dto.GetCommonRoom;
-import com.goomoong.room9backend.domain.room.dto.GetDetailRoom;
-import com.goomoong.room9backend.domain.room.dto.priceDto;
+import com.goomoong.room9backend.domain.room.RoomLike;
+import com.goomoong.room9backend.domain.room.dto.*;
 import com.goomoong.room9backend.domain.user.Role;
 import com.goomoong.room9backend.exception.RoomNotAddException;
+import com.goomoong.room9backend.repository.room.RoomLikeRepository;
 import com.goomoong.room9backend.service.ReviewService;
 import com.goomoong.room9backend.service.UserService;
 import com.goomoong.room9backend.service.file.FileService;
@@ -17,7 +17,6 @@ import com.goomoong.room9backend.repository.room.RoomRepository;
 import com.goomoong.room9backend.domain.file.File;
 import com.goomoong.room9backend.domain.file.RoomImg;
 import com.goomoong.room9backend.domain.room.Room;
-import com.goomoong.room9backend.domain.room.dto.CreatedRequestRoomDto;
 import com.goomoong.room9backend.domain.user.User;
 import com.goomoong.room9backend.exception.NoSuchRoomException;
 import com.goomoong.room9backend.util.AboutScore;
@@ -29,6 +28,7 @@ import java.io.IOException;
 import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -45,6 +45,7 @@ public class RoomService {
     private final RoomRepository roomRepository;
     private final FolderConfig folderConfig;
     private final ReviewService reviewService;
+    private final RoomLikeRepository roomLikeRepository;
 
     //방 생성
     @Transactional
@@ -110,6 +111,35 @@ public class RoomService {
         for (Room myRoom : myRooms) {
             scoreDto scoredto = reviewService.getAvgScoreAndCount(myRoom.getId());
             roomList.add(new GetCommonRoom(myRoom, scoredto));
+        }
+        return roomList;
+    }
+
+    @Transactional
+    public roomData.liked AboutGoodToRoom(Long id, User user) {
+        RoomLike currentRoomLike;
+        Room room = roomRepository.findById(id).orElseThrow(() -> new NoSuchRoomException("존재하지 않는 방입니다."));
+        Optional<RoomLike> prevGood = Optional.ofNullable(roomLikeRepository.findByRoomIdAndUserId(id, user.getId()));
+
+        if(prevGood.isEmpty()) {
+            currentRoomLike = RoomLike.builder().room(room).user(user).likeStatus(true).build();
+            room.withGood(currentRoomLike.getLikeStatus());
+            roomLikeRepository.save(currentRoomLike);
+        } else {
+            currentRoomLike = prevGood.get();
+            currentRoomLike.setLikeStatus(currentRoomLike.getLikeStatus());
+            room.withGood(currentRoomLike.getLikeStatus());
+        }
+
+        return new roomData.liked(room.getLiked(), currentRoomLike.getLikeStatus());
+    }
+
+    public List<GetCommonRoom> getRoomWithGood(User user) {
+        List<RoomLike> roomsWithGood = roomLikeRepository.findRoomWithGood(user);
+        List<GetCommonRoom> roomList = new ArrayList<>();
+        for (RoomLike roomWithGood : roomsWithGood) {
+            scoreDto scoredto = reviewService.getAvgScoreAndCount(roomWithGood.getId());
+            roomList.add(new GetCommonRoom(roomWithGood.getRoom(), scoredto));
         }
         return roomList;
     }

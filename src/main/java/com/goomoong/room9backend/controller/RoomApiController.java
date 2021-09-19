@@ -7,6 +7,7 @@ import com.goomoong.room9backend.service.ReviewService;
 import com.goomoong.room9backend.service.room.RoomSearchService;
 import com.goomoong.room9backend.service.room.RoomService;
 import com.goomoong.room9backend.domain.room.dto.*;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticatedPrincipal;
@@ -83,6 +84,18 @@ public class RoomApiController {
     @GetMapping("/room/random")
     public roomData.GET<List<GetCommonRoom>> getRandomRooms(){
         List<GetCommonRoom> roomList = roomSearchService.randSearch();
+        return new roomData.GET<>(roomList.size(), roomList);
+    }
+
+    @PostMapping("/room/good/{roomId}")
+    public roomData.liked addRoomGood(@PathVariable("roomId") Long id, @AuthenticationPrincipal CustomUserDetails currentUser) {
+        return roomService.AboutGoodToRoom(id, currentUser.getUser());
+    }
+
+    @GetMapping("/room/MyWish")
+    public roomData.GET<List<GetCommonRoom>> getMyWishList(@AuthenticationPrincipal CustomUserDetails currentUser) {
+        List<GetCommonRoom> roomList = roomService.getRoomWithGood(currentUser.getUser());
+
         return new roomData.GET<>(roomList.size(), roomList);
     }
 }

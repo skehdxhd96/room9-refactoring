@@ -91,3 +91,29 @@ include::{snippets}/room-random/http-request.adoc[]
 include::{snippets}/room-random/http-response.adoc[]
 == response-fields
 include::{snippets}/room-random/response-fields.adoc[]
+
+[[room-good]]
+== 숙소 좋아요 기능
+
+=== curl-request
+include::{snippets}/room-good/curl-request.adoc[]
+=== http-request
+include::{snippets}/room-good/http-request.adoc[]
+=== path-parameters
+include::{snippets}/room-good/path-parameters.adoc[]
+=== http-response
+include::{snippets}/room-good/http-response.adoc[]
+=== response-fields
+include::{snippets}/room-good/response-fields.adoc[]
+
+[[room-myWish]]
+== 내가 찜한 숙소 보기
+
+=== curl-request
+include::{snippets}/room-myWish/curl-request.adoc[]
+=== http-request
+include::{snippets}/room-myWish/http-request.adoc[]
+=== http-response
+include::{snippets}/room-myWish/http-response.adoc[]
+=== response-fields
+include::{snippets}/room-myWish/response-fields.adoc[]
