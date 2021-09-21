@@ -10,15 +10,15 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing
 public class Room9BackendApplication {
 
-	public static final String APPLICATION_LOCATIONS = "spring.config.location="
-			+ "classpath:application.properties,"
-			+ "classpath:aws.yml";
+//	public static final String APPLICATION_LOCATIONS = "spring.config.location="
+//			+ "classpath:application.properties,"
+//			+ "classpath:aws.yml";
 
 	public static void main(String[] args) {
-//		SpringApplication.run(Room9BackendApplication.class, args);
+		SpringApplication.run(Room9BackendApplication.class, args);
 
-		new SpringApplicationBuilder(Room9BackendApplication.class)
-				.properties(APPLICATION_LOCATIONS)
-				.run(args);
+//		new SpringApplicationBuilder(Room9BackendApplication.class)
+//				.properties(APPLICATION_LOCATIONS)
+//				.run(args);
 	}
 }

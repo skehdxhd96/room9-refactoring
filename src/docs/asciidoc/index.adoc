@@ -2,3 +2,4 @@
 - link:/docs/room.html[Room Api Docs]
 - link:/docs/user.html[User Api Docs]
 - link:/docs/chat.html[Chat Api Docs]
+- link:/docs/reservation.html[Reservation Api Docs]

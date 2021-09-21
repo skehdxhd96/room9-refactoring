@@ -48,9 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 @ExtendWith({SpringExtension.class, RestDocumentationExtension.class})
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, properties = "spring.config.location="
-        + "classpath:application.properties,"
-        + "classpath:aws.yml")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 class ChatApiControllerTest {
 
     @Autowired
