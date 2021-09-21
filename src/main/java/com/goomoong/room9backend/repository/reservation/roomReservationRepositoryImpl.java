@@ -20,7 +20,8 @@ public class roomReservationRepositoryImpl implements roomReservationRepositoryC
         return queryFactory.select(roomReservation)
                 .from(roomReservation)
                 .where(roomReservation.room.id.eq(roomId),
-                        roomReservation.reserveStatus.eq(ReserveStatus.COMPLETE))
+                        roomReservation.reserveStatus.eq(ReserveStatus.COMPLETE)
+                                .or(roomReservation.reserveStatus.eq(ReserveStatus.DONE)))
                 .fetch();
     }
 

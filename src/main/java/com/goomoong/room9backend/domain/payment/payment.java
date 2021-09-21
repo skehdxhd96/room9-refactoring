@@ -1,6 +1,7 @@
 package com.goomoong.room9backend.domain.payment;
 
 import com.goomoong.room9backend.domain.base.BaseEntity;
+import com.goomoong.room9backend.domain.reservation.roomReservation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class payment extends BaseEntity { // BaseEntity.CreatedAt = 결제일시
+public class payment extends BaseEntity {
 
     @Id
     @Column(name = "payment_Id")
@@ -22,9 +23,11 @@ public class payment extends BaseEntity { // BaseEntity.CreatedAt = 결제일시
      */
     private String Id;
 
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "Reservation_Id")
+    private roomReservation roomReservation;
 
     private String payMethod;
     private Integer totalPrice;
-    private paymentStatus payStatus;
+    private Boolean paymentStatus;
 }

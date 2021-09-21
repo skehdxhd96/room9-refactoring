@@ -1,0 +1,77 @@
+= RoomApiDocs
+NDM 21/09/2021
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+:operation-http-request-title: Example Request
+:operation-http-response-title: Example Response
+:safe-mode-level: 0
+
+[[reserve-room]]
+== 숙소 예약하기
+
+=== http-request
+include::{snippets}/reserve-room/http-request.adoc[]
+
+=== http-response
+include::{snippets}/reserve-room/http-response.adoc[]
+
+=== path-parameters
+include::{snippets}/reserve-room/path-parameters.adoc[]
+
+=== request-body
+include::{snippets}/reserve-room/request-body.adoc[]
+
+=== request-fields
+include::{snippets}/reserve-room/request-fields.adoc[]
+
+=== request-headers
+include::{snippets}/reserve-room/request-headers.adoc[]
+
+=== response-body
+include::{snippets}/reserve-room/response-body.adoc[]
+
+=== response-fields
+include::{snippets}/reserve-room/response-fields.adoc[]
+
+[[reserve-bookedList]]
+== 숙소의 예약 리스트 조회 api
+
+=== http-request
+include::{snippets}/reserve-bookedList/http-request.adoc[]
+
+=== http-response
+include::{snippets}/reserve-bookedList/http-response.adoc[]
+
+=== path-parameters
+include::{snippets}/reserve-bookedList/path-parameters.adoc[]
+
+=== response-body
+include::{snippets}/reserve-bookedList/response-body.adoc[]
+
+=== response-fields
+include::{snippets}/reserve-bookedList/response-fields.adoc[]
+
+[[reserve-myBook]]
+== 내가 예약한 숙소 리스트 조회
+
+=== http-request
+include::{snippets}/reserve-myBook/http-request.adoc[]
+
+=== http-response
+include::{snippets}/reserve-myBook/http-response.adoc[]
+
+=== request-headers
+include::{snippets}/reserve-myBook/request-headers.adoc[]
+
+=== response-body
+include::{snippets}/reserve-myBook/response-body.adoc[]
+
+=== response-fields
+include::{snippets}/reserve-myBook/response-fields.adoc[]
+
+
+

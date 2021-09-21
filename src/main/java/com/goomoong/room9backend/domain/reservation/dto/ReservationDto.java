@@ -1,6 +1,7 @@
 package com.goomoong.room9backend.domain.reservation.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.goomoong.room9backend.domain.reservation.roomReservation;
+import com.goomoong.room9backend.util.AboutDate;
 import lombok.*;
 import org.apache.tomcat.jni.Local;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -21,6 +22,7 @@ public class ReservationDto {
         private String finalDate;
         private Integer personnel;
         private Boolean petWhether;
+        private String aboutPayment;
     }
 
     @Getter
@@ -30,6 +32,32 @@ public class ReservationDto {
     @NoArgsConstructor
     public static class response {
         private Long reservationId;
+        private String title;
+        private String detailLocation;
+        private String rule;
+        private Boolean petWhether;
+        private Integer totalAmount;
+        private String startDate;
+        private String finalDate;
+        private Boolean reserveSuccess;
+        private String errorMsg;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @Builder
+    public static class bookWithCount<T> {
+        private int count;
+        private Long roomId;
+        private T booked;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @Builder
+    public static class bookData<T> {
+        private int count;
+        private T booked;
     }
 
     @Getter
@@ -49,16 +77,18 @@ public class ReservationDto {
     @NoArgsConstructor
     public static class MyList {
 
+        private Long roomId;
         private Integer personnel;
-        private LocalDateTime startDate;
-        private LocalDateTime finalDate;
+        private String startDate;
+        private String finalDate;
         private String detailLocation;
         private String title;
 
         public MyList(roomReservation roomReservation) {
+            this.roomId = roomReservation.getRoom().getId();
             this.personnel = roomReservation.getPersonnel();
-            this.startDate = roomReservation.getStartDate();
-            this.finalDate = roomReservation.getStartDate();
+            this.startDate = AboutDate.getStringFromLocalDateTime(roomReservation.getStartDate());
+            this.finalDate = AboutDate.getStringFromLocalDateTime(roomReservation.getStartDate());
             this.detailLocation = roomReservation.getRoom().getDetailLocation();
             this.title = roomReservation.getRoom().getTitle();
         }

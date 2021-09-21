@@ -97,6 +97,7 @@ dependencies {
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
 	asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
 }
 
 //querydsl 추가

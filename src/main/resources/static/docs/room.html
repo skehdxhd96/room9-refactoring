@@ -501,6 +501,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_http_request_7">http-request</a></li>
 <li><a href="#_http_response_6">http-response</a></li>
 <li><a href="#_response_fields_7">response-fields</a></li>
+<li><a href="#room-good">숙소 좋아요 기능</a>
+<ul class="sectlevel2">
+<li><a href="#_curl_request">curl-request</a></li>
+<li><a href="#_http_request_8">http-request</a></li>
+<li><a href="#_path_parameters_3">path-parameters</a></li>
+<li><a href="#_http_response_7">http-response</a></li>
+<li><a href="#_response_fields_8">response-fields</a></li>
+</ul>
+</li>
+<li><a href="#room-myWish">내가 찜한 숙소 보기</a>
+<ul class="sectlevel2">
+<li><a href="#_curl_request_2">curl-request</a></li>
+<li><a href="#_http_request_9">http-request</a></li>
+<li><a href="#_http_response_8">http-response</a></li>
+<li><a href="#_response_fields_9">response-fields</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1528,11 +1545,235 @@ Content-Length: 554
 </table>
 </div>
 </div>
+<div class="sect1">
+<h2 id="room-good"><a class="link" href="#room-good">숙소 좋아요 기능</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_curl_request"><a class="link" href="#_curl_request">curl-request</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'https://room9.docs.com/room/good/1' -i -X POST \
+    -H 'Authorization: Bearer accessToken'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_http_request_8"><a class="link" href="#_http_request_8">http-request</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /room/good/1 HTTP/1.1
+Authorization: Bearer accessToken
+Host: room9.docs.com</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_path_parameters_3"><a class="link" href="#_path_parameters_3">path-parameters</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 3. /room/good/{roomId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>roomId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">숙소 아이디</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_http_response_7"><a class="link" href="#_http_response_7">http-response</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 53
+
+{
+  "currentLiked" : 4,
+  "currentStatus" : true
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_response_fields_8"><a class="link" href="#_response_fields_8">response-fields</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>currentLiked</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">현재 좋아요 수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>currentStatus</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내가 좋아요 눌렀는지 여부</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="room-myWish"><a class="link" href="#room-myWish">내가 찜한 숙소 보기</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_curl_request_2"><a class="link" href="#_curl_request_2">curl-request</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'https://room9.docs.com/room/MyWish' -i -X GET \
+    -H 'Authorization: Bearer accessToken'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_http_request_9"><a class="link" href="#_http_request_9">http-request</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /room/MyWish HTTP/1.1
+Authorization: Bearer accessToken
+Host: room9.docs.com</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_http_response_8"><a class="link" href="#_http_response_8">http-response</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 554
+
+{
+  "count" : 1,
+  "room" : [ {
+    "roomId" : 1,
+    "username" : "mockusername",
+    "title" : "아메리카노",
+    "location" : "서울",
+    "limitPeople" : 10,
+    "price" : 10000,
+    "like" : 3,
+    "avgScore" : 0.0,
+    "reviewCount" : 0,
+    "images" : [ {
+      "url" : "https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"
+    }, {
+      "url" : "https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"
+    } ]
+  } ]
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_response_fields_9"><a class="link" href="#_response_fields_9">response-fields</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>count</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">총 숙소 개수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>room.[].roomId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">숙소 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>room.[].username</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">숙소 만든 사람 닉네임</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>room.[].title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">숙소 제목</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>room.[].location</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">숙소 위치</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>room.[].limitPeople</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">제한 인원</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>room.[].price</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">숙소 가격</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>room.[].like</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">숙소에 찍힌 좋아요 수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>room.[].images[].url</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">숙소 이미지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>room.[].avgScore</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">숙소 댓글 평점 평균</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>room.[].reviewCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">숙소 댓글 수</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2021-09-12 15:28:33 +0900
+Last updated 2021-09-19 19:01:08 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
