@@ -10,6 +10,7 @@ import com.goomoong.room9backend.domain.room.Room;
 import com.goomoong.room9backend.domain.user.Role;
 import com.goomoong.room9backend.domain.user.User;
 import com.goomoong.room9backend.repository.room.RoomRepository;
+import com.goomoong.room9backend.security.userdetails.CustomUserDetails;
 import com.goomoong.room9backend.service.ReviewService;
 import com.goomoong.room9backend.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +25,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -37,6 +39,8 @@ import static com.goomoong.room9backend.ApiDocumentUtils.getDocumentRequest;
 import static com.goomoong.room9backend.ApiDocumentUtils.getDocumentResponse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -180,16 +184,20 @@ class ReviewApiControllerTest {
 
         //when
         ResultActions result = mvc.perform(post("/api/v1/reviews")
+                .principal(new UsernamePasswordAuthenticationToken(CustomUserDetails.create(user), null))
+                .header("Authorization", "Bearer accessToken")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(CreateReviewRequestDto.builder().userId(1L).roomId(1L).reviewContent("test").reviewScore(1).build())));
+                .content(objectMapper.writeValueAsString(CreateReviewRequestDto.builder().roomId(1L).reviewContent("test").reviewScore(1).build())));
 
         //then
         result
                 .andDo(document("review-create",
                         getDocumentRequest(),
                         getDocumentResponse(),
+                        requestHeaders(
+                                headerWithName("Authorization").description("카카오 사용자 Bearer Token")
+                        ),
                         requestFields(
-                                fieldWithPath("userId").description("유저 ID"),
                                 fieldWithPath("roomId").description("방 ID"),
                                 fieldWithPath("reviewContent").description("내용"),
                                 fieldWithPath("reviewScore").description("평점")
@@ -210,6 +218,8 @@ class ReviewApiControllerTest {
 
         //when
         ResultActions result = mvc.perform(RestDocumentationRequestBuilders.patch("/api/v1/reviews/{id}", 1L)
+                .principal(new UsernamePasswordAuthenticationToken(CustomUserDetails.create(user), null))
+                .header("Authorization", "Bearer accessToken")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(UpdateReviewRequestDto.builder().reviewContent("test2").reviewScore(2).build())));
 
@@ -218,6 +228,9 @@ class ReviewApiControllerTest {
                 .andDo(document("review-update",
                         getDocumentRequest(),
                         getDocumentResponse(),
+                        requestHeaders(
+                                headerWithName("Authorization").description("카카오 사용자 Bearer Token")
+                        ),
                         pathParameters(
                                 parameterWithName("id").description("id")
                         ),
@@ -239,20 +252,23 @@ class ReviewApiControllerTest {
     public void 리뷰_삭제() throws Exception{
         //given
         //when
-        ResultActions result = mvc.perform(RestDocumentationRequestBuilders.delete("/api/v1/reviews/{id}", 1L));
+        ResultActions result = mvc.perform(RestDocumentationRequestBuilders.delete("/api/v1/reviews/{id}", 1L)
+                .principal(new UsernamePasswordAuthenticationToken(CustomUserDetails.create(user), null))
+                .header("Authorization", "Bearer accessToken"));
 
         //then
         result
                 .andDo(document("review-delete",
                         getDocumentRequest(),
                         getDocumentResponse(),
+                        requestHeaders(
+                                headerWithName("Authorization").description("카카오 사용자 Bearer Token")
+                        ),
                         pathParameters(
                                 parameterWithName("id").description("id")
                         )
                 ))
                 .andExpect(status().isOk())
                 .andDo(print());
-
     }
-
 }
