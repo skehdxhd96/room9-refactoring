@@ -7,6 +7,7 @@ import com.goomoong.room9backend.domain.user.Role;
 import com.goomoong.room9backend.domain.user.User;
 import com.goomoong.room9backend.repository.review.ReviewRepository;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,6 +31,13 @@ class ReviewServiceTest {
     @InjectMocks
     private ReviewService reviewService;
 
+    private User user;
+
+    @BeforeEach
+    public void setUp() {
+        user = User.builder().id(1L).nickname("mock").role(Role.GUEST).thumbnailImgUrl("mock.jpg").email("mock@abc").birthday("0101").gender("male").intro("test").build();
+    }
+
     @Test
     public void 리뷰_저장(){
         //given
@@ -50,13 +58,14 @@ class ReviewServiceTest {
         //given
         Review review = new Review();
         review.setId(1L);
+        review.setUser(user);
         review.setReviewScore(1);
         review.setReviewContent("test1");
 
         given(reviewRepository.findById(review.getId())).willReturn(Optional.of(review));
 
         //when
-        reviewService.update(1L,"test2", 2);
+        reviewService.update(1L,1L,"test2", 2);
 
         //then
         Assertions.assertNotEquals("test1",review.getReviewContent());
@@ -68,16 +77,16 @@ class ReviewServiceTest {
     public void 리뷰_삭제(){
         //given
         Review review = new Review();
+        review.setUser(user);
         review.setId(1L);
         reviewService.save(review);
 
         given(reviewRepository.findById(review.getId())).willReturn(Optional.of(review));
 
         //when
-        reviewService.delete(review.getId());
+        reviewService.delete(1L, review.getId());
 
         //then
-        verify(reviewRepository).findById(any(Long.class));
         verify(reviewRepository).delete(any(Review.class));
     }
 
@@ -85,7 +94,6 @@ class ReviewServiceTest {
     public void 리뷰_조회_by유저_by방(){
         //given
         Review review = new Review();
-        User user = User.builder().id(1L).accountId("1").name("mock").nickname("mock").role(Role.GUEST).thumbnailImgUrl("mock.jpg").email("mock@abc").birthday("0101").gender("male").intro("test").build();
         Room room = new Room();
 
 //        room.setId(1L);

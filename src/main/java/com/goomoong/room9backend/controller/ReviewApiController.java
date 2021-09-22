@@ -6,9 +6,11 @@ import com.goomoong.room9backend.domain.review.dto.*;
 import com.goomoong.room9backend.domain.room.Room;
 import com.goomoong.room9backend.domain.user.User;
 import com.goomoong.room9backend.repository.room.RoomRepository;
+import com.goomoong.room9backend.security.userdetails.CustomUserDetails;
 import com.goomoong.room9backend.service.ReviewService;
 import com.goomoong.room9backend.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,9 +75,9 @@ public class ReviewApiController {
     }
 
     @PostMapping("/api/v1/reviews")
-    public CreateReviewResponseDto saveReviewV1(@RequestBody @Validated CreateReviewRequestDto request) {
-        User user = userService.findById(request.getUserId());
-        Room room = roomRepository.findById(request.getUserId()).orElse(null);
+    public CreateReviewResponseDto saveReviewV1(@AuthenticationPrincipal CustomUserDetails currentUser, @RequestBody @Validated CreateReviewRequestDto request) {
+        User user = currentUser.getUser();
+        Room room = roomRepository.findById(request.getRoomId()).orElse(null);
 
         Review review = Review.builder()
                                 .user(user)
@@ -90,9 +92,8 @@ public class ReviewApiController {
     }
 
     @PatchMapping("/api/v1/reviews/{id}")
-    public UpdateReviewResponseDto updateReviewV1(@PathVariable Long id, @RequestBody @Validated UpdateReviewRequestDto request){
-
-        reviewService.update(id, request.getReviewContent(), request.getReviewScore());
+    public UpdateReviewResponseDto updateReviewV1(@AuthenticationPrincipal CustomUserDetails currentUser, @PathVariable Long id, @RequestBody @Validated UpdateReviewRequestDto request){
+        reviewService.update(currentUser.getUser().getId(), id, request.getReviewContent(), request.getReviewScore());
 
         Review review = reviewService.findById(id);
 
@@ -100,7 +101,7 @@ public class ReviewApiController {
     }
 
     @DeleteMapping("/api/v1/reviews/{id}")
-    public void deleteReviewV1(@PathVariable Long id){
-        reviewService.delete(id);
+    public void deleteReviewV1(@AuthenticationPrincipal CustomUserDetails currentUser, @PathVariable Long id){
+        reviewService.delete(currentUser.getUser().getId(), id);
     }
 }
