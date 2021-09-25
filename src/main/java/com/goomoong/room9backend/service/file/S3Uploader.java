@@ -67,7 +67,7 @@ public class S3Uploader {
                 .originalName(originalName)
                 .extension(extension)
                 .fileName(fileName)
-                .url("https://roomimg.s3.ap-northeast-2.amazonaws.com/" + fileName)
+                .url("https://room9.s3.ap-northeast-2.amazonaws.com/" + fileName)
 //                .url(amazonS3Client.getUrl(bucket, fileName).toString())
                 .build();
     }
