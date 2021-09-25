@@ -72,6 +72,18 @@ include::{snippets}/room-reservePrice/request-parameters.adoc[]
 === response-fields
 include::{snippets}/room-reservePrice/response-fields.adoc[]
 
+[[room-myRoomList]]
+== 내가만든 숙소 리스트 조회
+
+=== http-request
+include::{snippets}/room-myRoomList/http-request.adoc[]
+=== request-headers
+include::{snippets}/room-myRoomList/request-headers.adoc[]
+=== http-response
+include::{snippets}/room-myRoomList/http-response.adoc[]
+=== response-fields
+include::{snippets}/room-myRoomList/response-fields.adoc[]
+
 [[room-popular]]
 = 인기순 방 조회 / 첫 화면 api
 

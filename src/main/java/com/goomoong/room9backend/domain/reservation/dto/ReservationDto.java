@@ -88,7 +88,7 @@ public class ReservationDto {
             this.roomId = roomReservation.getRoom().getId();
             this.personnel = roomReservation.getPersonnel();
             this.startDate = AboutDate.getStringFromLocalDateTime(roomReservation.getStartDate());
-            this.finalDate = AboutDate.getStringFromLocalDateTime(roomReservation.getStartDate());
+            this.finalDate = AboutDate.getStringFromLocalDateTime(roomReservation.getFinalDate());
             this.detailLocation = roomReservation.getRoom().getDetailLocation();
             this.title = roomReservation.getRoom().getTitle();
         }
