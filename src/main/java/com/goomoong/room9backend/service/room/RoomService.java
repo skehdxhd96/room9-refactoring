@@ -97,8 +97,8 @@ public class RoomService {
             return room.getPrice() * days;
         }
 
-        if(room.getLimited() < priceDto.getPersonnel()) {
-            int addCharge = room.getCharge() * (priceDto.getPersonnel() - room.getLimited());
+        if(room.getLimited() < priceDto.getPersonnel()) { // 추가요금 붙는상황
+            long addCharge = room.getCharge() * (priceDto.getPersonnel() - room.getLimited()) * days;
             return addCharge + room.getPrice() * days;
         }
         return room.getPrice() * days;
