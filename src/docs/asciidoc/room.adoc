@@ -33,6 +33,8 @@ include::{snippets}/room-create/response-fields.adoc[]
 include::{snippets}/room-detail/http-request.adoc[]
 === http-response
 include::{snippets}/room-detail/http-response.adoc[]
+=== request-headers
+include::{snippets}/room-detail/request-headers.adoc[]
 === path-parameters
 include::{snippets}/room-detail/path-parameters.adoc[]
 === response-fields

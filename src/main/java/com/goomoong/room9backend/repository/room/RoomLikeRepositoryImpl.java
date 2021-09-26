@@ -26,4 +26,17 @@ public class RoomLikeRepositoryImpl implements RoomLikeRepositoryCustom{
                         roomLike.likeStatus.eq(true))
                 .fetch();
     }
+
+    @Override
+    public Boolean LikeExists(Long roomId, Long userId) {
+        Integer fetchOne = queryFactory
+                .selectOne()
+                .from(roomLike)
+                .where(roomLike.room.id.eq(roomId)
+                        .and(roomLike.user.id.eq(userId)
+                                .and(roomLike.likeStatus.eq(true))))
+                .fetchFirst();
+
+        return fetchOne != null;
+    }
 }

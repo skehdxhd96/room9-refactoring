@@ -44,8 +44,8 @@ public class RoomApiController {
     }
 
     @GetMapping("/room/{roomId}")
-    public GetDetailRoom getDetailRoom(@PathVariable("roomId") Long id) {
-        return roomService.getRoomDetail(id);
+    public GetDetailRoom getDetailRoom(@PathVariable("roomId") Long id, @AuthenticationPrincipal CustomUserDetails currentUser) {
+        return roomService.getRoomDetail(id, currentUser.getUser());
     }
 
     @GetMapping("/room/myRoom")

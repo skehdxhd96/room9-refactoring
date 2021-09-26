@@ -73,5 +73,23 @@ include::{snippets}/reserve-myBook/response-body.adoc[]
 === response-fields
 include::{snippets}/reserve-myBook/response-fields.adoc[]
 
+[[reserve-mybook-host]]
+== 호스트용 예약 리스트 조회
+
+=== http-request
+include::{snippets}/reserve-mybook-host/http-request.adoc[]
+
+=== path-parameters
+include::{snippets}/reserve-mybook-host/path-parameters.adoc[]
+
+=== request-headers
+include::{snippets}/reserve-mybook-host/request-headers.adoc[]
+
+=== response-body
+include::{snippets}/reserve-mybook-host/response-body.adoc[]
+
+=== response-fields
+include::{snippets}/reserve-mybook-host/response-fields.adoc[]
+
 
 

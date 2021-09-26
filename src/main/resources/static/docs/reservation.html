@@ -478,6 +478,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_response_fields_3">response-fields</a></li>
 </ul>
 </li>
+<li><a href="#reserve-mybook-host">호스트용 예약 리스트 조회</a>
+<ul class="sectlevel2">
+<li><a href="#_http_request_4">http-request</a></li>
+<li><a href="#_path_parameters_3">path-parameters</a></li>
+<li><a href="#_request_headers_3">request-headers</a></li>
+<li><a href="#_response_body_4">response-body</a></li>
+<li><a href="#_response_fields_4">response-fields</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -493,7 +502,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 Content-Type: application/json
 Authorization: Bearer accessToken
 Accept: application/json
-Content-Length: 280
+Content-Length: 267
 Host: room9.docs.com
 
 {
@@ -501,7 +510,7 @@ Host: room9.docs.com
   "finalDate" : "2021-09-21",
   "personnel" : 3,
   "petWhether" : true,
-  "aboutPayment" : "{\"paymentId\":\"merchant_uid\",\"paymentMethod\":\"kakaopay\",\"paymentStatus\":true, \"paymentAmount\":100000, \"paymentErrorMsg\":\"error_msg\"}"
+  "aboutPayment" : "{\"merchant_uid\":\"merchant_uid\",\"pg_provider\":\"kakaopay\",\"success\":true, \"paid_amount\":100000, \"error_msg\":\"error_msg\"}"
 }</code></pre>
 </div>
 </div>
@@ -563,7 +572,7 @@ Content-Length: 370
   "finalDate" : "2021-09-21",
   "personnel" : 3,
   "petWhether" : true,
-  "aboutPayment" : "{\"paymentId\":\"merchant_uid\",\"paymentMethod\":\"kakaopay\",\"paymentStatus\":true, \"paymentAmount\":100000, \"paymentErrorMsg\":\"error_msg\"}"
+  "aboutPayment" : "{\"merchant_uid\":\"merchant_uid\",\"pg_provider\":\"kakaopay\",\"success\":true, \"paid_amount\":100000, \"error_msg\":\"error_msg\"}"
 }</code></pre>
 </div>
 </div>
@@ -607,11 +616,11 @@ Content-Length: 370
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>aboutPayment</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">결제 데이터(<strong>paymentId : 아임포트 merchant_uid</strong>
-/<strong>paymentMethod : 아임포트 pay_method</strong>
-/<strong>paymentStatus : 아임포트 success</strong>
-/<strong>paymentAmount : 아임포트 paid_amount</strong>
-/<strong>paymentErrorMsg : 아임포트 error_msg(결제 성공일 경우 null)</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결제 데이터(<strong>merchant_uid : 아임포트 merchant_uid</strong>
+/<strong>pg_provider : 아임포트 pg_provider</strong>
+/<strong>success : 아임포트 success</strong>
+/<strong>paid_amount : 아임포트 paid_amount</strong>
+/<strong>error_msg : 아임포트 error_msg(결제 성공일 경우 null)</strong></p></td>
 </tr>
 </tbody>
 </table>
@@ -972,11 +981,177 @@ Content-Length: 219
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="reserve-mybook-host"><a class="link" href="#reserve-mybook-host">호스트용 예약 리스트 조회</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_http_request_4"><a class="link" href="#_http_request_4">http-request</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /room/1/customer/list HTTP/1.1
+Authorization: Bearer accessToken
+Host: room9.docs.com</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_path_parameters_3"><a class="link" href="#_path_parameters_3">path-parameters</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 3. /room/{roomId}/customer/list</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>roomId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">숙소 아이디</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_request_headers_3"><a class="link" href="#_request_headers_3">request-headers</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카카오 사용자 Bearer Token</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_response_body_4"><a class="link" href="#_response_body_4">response-body</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
+  "count" : 1,
+  "roomId" : 1,
+  "booked" : [ {
+    "userId" : 1,
+    "userNickName" : "mockusername",
+    "userEmail" : "mock@abc",
+    "userBirth" : "0101",
+    "userGender" : "male",
+    "personnel" : 3,
+    "startDate" : "2021-09-26",
+    "finalDate" : "2021-09-29",
+    "petWhether" : true,
+    "paid_method" : "kakaopay",
+    "paid_amount" : 100000
+  } ]
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_response_fields_4"><a class="link" href="#_response_fields_4">response-fields</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>count</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">총 예약 개수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>roomId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">숙소 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].userId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">예약한 사람 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].userNickName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">예약한 사람 닉네임</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].userEmail</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">예약한 사람 이메일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].userBirth</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">예약한 사람 생년월일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].userGender</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">예약한 사람 성별</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].personnel</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">예약 인원</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].startDate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">예약 시작 날짜(yyyy-mm-dd)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].finalDate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">예약 마지막 날짜(yyyy-mm-dd)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].petWhether</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">반려견 여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].paid_method</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결제 방법</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].paid_amount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결제 총액</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2021-09-21 14:10:11 +0900
+Last updated 2021-09-26 19:11:39 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

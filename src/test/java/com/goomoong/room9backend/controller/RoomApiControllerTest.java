@@ -9,6 +9,8 @@ import com.goomoong.room9backend.config.SecurityConfig;
 import com.goomoong.room9backend.domain.file.File;
 import com.goomoong.room9backend.domain.file.RoomImg;
 import com.goomoong.room9backend.domain.file.dto.GetRoomfileDto;
+import com.goomoong.room9backend.domain.reservation.ReserveStatus;
+import com.goomoong.room9backend.domain.reservation.roomReservation;
 import com.goomoong.room9backend.domain.review.Review;
 import com.goomoong.room9backend.domain.review.dto.CreateReviewRequestDto;
 import com.goomoong.room9backend.domain.review.dto.scoreDto;
@@ -27,6 +29,7 @@ import com.goomoong.room9backend.service.file.FileService;
 import com.goomoong.room9backend.service.file.S3Uploader;
 import com.goomoong.room9backend.service.room.RoomSearchService;
 import com.goomoong.room9backend.service.room.RoomService;
+import com.goomoong.room9backend.util.AboutDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -82,7 +85,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureRestDocs
 @ExtendWith({SpringExtension.class, RestDocumentationExtension.class})
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, properties = "spring.config.location="
+        + "classpath:application.properties,"
+        + "classpath:aws.yml")
 @AutoConfigureMockMvc
 public class RoomApiControllerTest {
 
@@ -198,6 +203,17 @@ public class RoomApiControllerTest {
         myRoom.add(room2);
         myRoom.add(room3);
 
+        List<roomReservation> reserveList = new ArrayList<>();
+        reserveList.add(roomReservation.builder()
+                .room(room1)
+                .users(user)
+                .reserveStatus(ReserveStatus.COMPLETE)
+                .startDate(AboutDate.getLocalDateTimeFromString("2021-08-31"))
+                .finalDate(AboutDate.getLocalDateTimeFromString("2021-09-04"))
+                .personnel(5)
+                .petWhether(false)
+                .build());
+
         scoreDto scoredto = scoreDto.builder()
                 .avgScore(2.5)
                 .reviewCount(147)
@@ -205,7 +221,7 @@ public class RoomApiControllerTest {
         scoreDto scoreDto2 = new scoreDto();
         GetCommonRoom getCommonRoom = new GetCommonRoom(room1, scoreDto2);
         glist.add(getCommonRoom);
-        getDetailRoom = new GetDetailRoom(room1, scoreDto2);
+        getDetailRoom = new GetDetailRoom(room1, scoreDto2, true, reserveList);
     }
 
     @Test
@@ -418,10 +434,12 @@ public class RoomApiControllerTest {
     @DisplayName(value = "방 상세보기")
     public void getRoomDetailTest() throws Exception{
         //given
-        given(roomService.getRoomDetail(any())).willReturn(getDetailRoom);
+        given(roomService.getRoomDetail(any(), any())).willReturn(getDetailRoom);
 
         //when
-        ResultActions results = mvc.perform(RestDocumentationRequestBuilders.get("/room/{roomId}", 1L));
+        ResultActions results = mvc.perform(RestDocumentationRequestBuilders.get("/room/{roomId}", 1L)
+                .principal(new UsernamePasswordAuthenticationToken(CustomUserDetails.create(user), null))
+                .header("Authorization", "Bearer accessToken"));
 
         //then
         results
@@ -429,6 +447,9 @@ public class RoomApiControllerTest {
                 .andDo(document("room-detail",
                         getDocumentRequest(),
                         getDocumentResponse(),
+                        requestHeaders(
+                                headerWithName("Authorization").description("카카오 사용자 Bearer Token")
+                        ),
                         pathParameters(
                                 parameterWithName("roomId").description("숙소 아이디")
                         ),
@@ -451,7 +472,10 @@ public class RoomApiControllerTest {
                                 fieldWithPath("reviewCount").type(JsonFieldType.NUMBER).description("숙소 댓글 수"),
                                 fieldWithPath("room_configuration[].confType").type(JsonFieldType.STRING).description("숙소 구성요소 타입(ex 화장실, 침실...)"),
                                 fieldWithPath("room_configuration[].count").type(JsonFieldType.NUMBER).description("숙소 구성요소 개수"),
-                                fieldWithPath("room_amenity[].facility").type(JsonFieldType.STRING).description("숙소 부대시설 이름(ex 전자레인지, 도어락 ..)")
+                                fieldWithPath("room_amenity[].facility").type(JsonFieldType.STRING).description("숙소 부대시설 이름(ex 전자레인지, 도어락 ..)"),
+                                fieldWithPath("reserveList[].startDate").type(JsonFieldType.STRING).description("현재 예약된 날짜배열. 시작날짜"),
+                                fieldWithPath("reserveList[].finalDate").type(JsonFieldType.STRING).description("현재 예약된 날짜배열. 마감날짜"),
+                                fieldWithPath("currentLikeStatus").type(JsonFieldType.BOOLEAN).description("현재 상세보기중인 유저가 좋아요 눌렀는지 여부")
                         )
                 ))
                 .andExpect(jsonPath("$.roomId").value(1L))
@@ -476,7 +500,10 @@ public class RoomApiControllerTest {
                 .andExpect(jsonPath("$.room_configuration[0].count").value(3))
                 .andExpect(jsonPath("$.room_configuration[1].count").value(5))
                 .andExpect(jsonPath("$.room_amenity[0].facility").value("전자레인지"))
-                .andExpect(jsonPath("$.room_amenity[1].facility").value("도어락"));
+                .andExpect(jsonPath("$.room_amenity[1].facility").value("도어락"))
+                .andExpect(jsonPath("$.reserveList[0].startDate").value("2021-08-31"))
+                .andExpect(jsonPath("$.reserveList[0].finalDate").value("2021-09-04"))
+                .andExpect(jsonPath("$.currentLikeStatus").value("true"));
     }
 
     @Test
