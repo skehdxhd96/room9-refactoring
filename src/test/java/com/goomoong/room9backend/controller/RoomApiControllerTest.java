@@ -138,8 +138,8 @@ public class RoomApiControllerTest {
         aset.add(Amenity.builder().facility("도어락").build());
 
 
-        File file1 = File.builder().id(1L).fileName("test1").originalName("test1.png").extension("png").url("https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png").build();
-        File file2 = File.builder().id(2L).fileName("test2").originalName("test2.jpg").extension("jpg").url("https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg").build();
+        File file1 = File.builder().id(1L).fileName("test1").originalName("test1.png").extension("png").url("https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png").build();
+        File file2 = File.builder().id(2L).fileName("test2").originalName("test2.jpg").extension("jpg").url("https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg").build();
 
         List<RoomImg> rllist = new ArrayList<>();
         rllist.add(RoomImg.builder().id(1L).file(file1).build());
@@ -306,8 +306,8 @@ public class RoomApiControllerTest {
                 .andExpect(jsonPath("$.room[0].like").value(3))
                 .andExpect(jsonPath("$.room[0].avgScore").value(0.0))
                 .andExpect(jsonPath("$.room[0].reviewCount").value(0))
-                .andExpect(jsonPath("$.room[0].images[0].url").value("https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"))
-                .andExpect(jsonPath("$.room[0].images[1].url").value("https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"));
+                .andExpect(jsonPath("$.room[0].images[0].url").value("https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"))
+                .andExpect(jsonPath("$.room[0].images[1].url").value("https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"));
     }
 
     @Test
@@ -362,8 +362,8 @@ public class RoomApiControllerTest {
                 .andExpect(jsonPath("$.room[0].like").value(3))
                 .andExpect(jsonPath("$.room[0].avgScore").value(0.0))
                 .andExpect(jsonPath("$.room[0].reviewCount").value(0))
-                .andExpect(jsonPath("$.room[0].images[0].url").value("https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"))
-                .andExpect(jsonPath("$.room[0].images[1].url").value("https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"));
+                .andExpect(jsonPath("$.room[0].images[0].url").value("https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"))
+                .andExpect(jsonPath("$.room[0].images[1].url").value("https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"));
     }
 
     @Test
@@ -410,8 +410,8 @@ public class RoomApiControllerTest {
                 .andExpect(jsonPath("$.room[0].like").value(3))
                 .andExpect(jsonPath("$.room[0].avgScore").value(0.0))
                 .andExpect(jsonPath("$.room[0].reviewCount").value(0))
-                .andExpect(jsonPath("$.room[0].images[0].url").value("https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"))
-                .andExpect(jsonPath("$.room[0].images[1].url").value("https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"));
+                .andExpect(jsonPath("$.room[0].images[0].url").value("https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"))
+                .andExpect(jsonPath("$.room[0].images[1].url").value("https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"));
     }
 
     @Test
@@ -464,8 +464,8 @@ public class RoomApiControllerTest {
                 .andExpect(jsonPath("$.limitPeople").value(10))
                 .andExpect(jsonPath("$.price").value(10000))
                 .andExpect(jsonPath("$.like").value(3))
-                .andExpect(jsonPath("$.images[0].url").value("https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"))
-                .andExpect(jsonPath("$.images[1].url").value("https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"))
+                .andExpect(jsonPath("$.images[0].url").value("https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"))
+                .andExpect(jsonPath("$.images[1].url").value("https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"))
                 .andExpect(jsonPath("$.content").value("내용1입니다."))
                 .andExpect(jsonPath("$.rule").value("상세페이지 들어가기 전 간단한 정보만 표기합니다."))
                 .andExpect(jsonPath("$.charge").value(1000))
@@ -483,8 +483,14 @@ public class RoomApiControllerTest {
     @DisplayName(value = "날짜와 인원을 선택할때마다 가격을 조회하는 api test")
     public void getTotalPriceTest() throws Exception{
 
+        roomData.price price = roomData.price.builder()
+                .totalPrice(Long.valueOf(48000))
+                .originalPrice(Long.valueOf(40000))
+                .charge(Long.valueOf(8000))
+                .build();
+
         //given
-        given(roomService.getTotalPrice(anyLong(), any())).willReturn(42000L);
+        given(roomService.getTotalPrice(anyLong(), any())).willReturn(price);
 
         //when
         ResultActions results = mvc.perform(RestDocumentationRequestBuilders.get("/room/price/{roomId}", 1L)
@@ -507,10 +513,12 @@ public class RoomApiControllerTest {
                                 parameterWithName("personnel").optional().description("예약하려고 하는 인원 수")
                         ),
                         responseFields(
-                                fieldWithPath("totalPrice").type(JsonFieldType.NUMBER).description("총 가격")
+                                fieldWithPath("totalPrice").type(JsonFieldType.NUMBER).description("총 가격(기본가격 + 추가요금)"),
+                                fieldWithPath("originalPrice").type(JsonFieldType.NUMBER).description("기본 가격(방값 x 숙박일)"),
+                                fieldWithPath("charge").type(JsonFieldType.NUMBER).description("추가 요금(추가인원 x 숙박일 x 추가요금)")
                         )
                 ))
-                .andExpect(jsonPath("$.totalPrice").value(42000));
+                .andExpect(jsonPath("$.totalPrice").value(48000));
     }
 
     @Test
@@ -651,7 +659,7 @@ public class RoomApiControllerTest {
                 .andExpect(jsonPath("$.room[0].like").value(3))
                 .andExpect(jsonPath("$.room[0].avgScore").value(0.0))
                 .andExpect(jsonPath("$.room[0].reviewCount").value(0))
-                .andExpect(jsonPath("$.room[0].images[0].url").value("https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"))
-                .andExpect(jsonPath("$.room[0].images[1].url").value("https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"));
+                .andExpect(jsonPath("$.room[0].images[0].url").value("https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"))
+                .andExpect(jsonPath("$.room[0].images[1].url").value("https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"));
     }
 }

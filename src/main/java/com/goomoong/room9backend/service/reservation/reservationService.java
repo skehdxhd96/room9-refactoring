@@ -77,16 +77,16 @@ public class reservationService {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         try {
             paymentDto.request deserializedPayment = objectMapper.readValue(request.getAboutPayment(), paymentDto.request.class);
-            Boolean paymentStatus = deserializedPayment.getPaymentStatus();
+            Boolean paymentStatus = deserializedPayment.getSuccess();
 
             if(paymentStatus) {
                 reserve.setReserveStatus(ReserveStatus.COMPLETE);}
 
             paymentRepository.save(payment.builder()
-                    .Id(deserializedPayment.getPaymentId())
+                    .Id(deserializedPayment.getMerchant_uid())
                     .roomReservation(reserve)
-                    .totalPrice(deserializedPayment.getPaymentAmount())
-                    .payMethod(deserializedPayment.getPaymentMethod())
+                    .totalPrice(deserializedPayment.getPaid_amount())
+                    .payMethod(deserializedPayment.getPg_provider())
                     .paymentStatus(paymentStatus)
                     .build());
 
@@ -96,11 +96,11 @@ public class reservationService {
                     .detailLocation(reserve.getRoom().getDetailLocation())
                     .rule(reserve.getRoom().getRule())
                     .petWhether(reserve.getPetWhether())
-                    .totalAmount(deserializedPayment.getPaymentAmount())
+                    .totalAmount(deserializedPayment.getPaid_amount())
                     .startDate(AboutDate.getStringFromLocalDateTime(reserve.getStartDate()))
                     .finalDate(AboutDate.getStringFromLocalDateTime(reserve.getFinalDate()))
                     .reserveSuccess(paymentStatus)
-                    .errorMsg(deserializedPayment.getPaymentErrorMsg())
+                    .errorMsg(deserializedPayment.getError_msg())
                     .build();
 
         } catch (JsonProcessingException e) {

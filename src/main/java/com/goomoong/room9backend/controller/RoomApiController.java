@@ -63,13 +63,8 @@ public class RoomApiController {
     }
 
     @GetMapping("/room/price/{roomId}")
-    public roomData.price getRoomPrice(@PathVariable("roomId") Long id, @RequestParam(required = false) Integer personnel,
-                                       @RequestParam String startDate,
-                                       @RequestParam String finalDate) {
-        return new roomData.price(roomService.getTotalPrice(id, priceDto.builder()
-                                                                .personnel(personnel)
-                                                                .startDate(startDate)
-                                                                .finalDate(finalDate).build()));
+    public roomData.price getRoomPrice(@PathVariable("roomId") Long id, @ModelAttribute priceDto priceDto) {
+        return roomService.getTotalPrice(id, priceDto);
     }
 
     @GetMapping("/room/popular")
