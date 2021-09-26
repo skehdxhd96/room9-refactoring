@@ -1,5 +1,7 @@
 package com.goomoong.room9backend.service.room;
 
+import com.goomoong.room9backend.domain.reservation.dto.ReservationDto;
+import com.goomoong.room9backend.domain.reservation.roomReservation;
 import com.goomoong.room9backend.domain.review.dto.scoreDto;
 import com.goomoong.room9backend.domain.room.Amenity;
 import com.goomoong.room9backend.domain.room.RoomConfiguration;
@@ -7,6 +9,7 @@ import com.goomoong.room9backend.domain.room.RoomLike;
 import com.goomoong.room9backend.domain.room.dto.*;
 import com.goomoong.room9backend.domain.user.Role;
 import com.goomoong.room9backend.exception.RoomNotAddException;
+import com.goomoong.room9backend.repository.reservation.roomReservationRepository;
 import com.goomoong.room9backend.repository.room.RoomLikeRepository;
 import com.goomoong.room9backend.service.ReviewService;
 import com.goomoong.room9backend.service.UserService;
@@ -19,6 +22,7 @@ import com.goomoong.room9backend.domain.file.RoomImg;
 import com.goomoong.room9backend.domain.room.Room;
 import com.goomoong.room9backend.domain.user.User;
 import com.goomoong.room9backend.exception.NoSuchRoomException;
+import com.goomoong.room9backend.util.AboutDate;
 import com.goomoong.room9backend.util.AboutScore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -46,6 +50,7 @@ public class RoomService {
     private final FolderConfig folderConfig;
     private final ReviewService reviewService;
     private final RoomLikeRepository roomLikeRepository;
+    private final roomReservationRepository roomReservationRepository;
 
     //방 생성
     @Transactional
@@ -71,10 +76,13 @@ public class RoomService {
         return room.getId();
     }
 
-    public GetDetailRoom getRoomDetail(Long id) {
+    public GetDetailRoom getRoomDetail(Long id, User user) {
         Room room = roomRepository.findById(id).orElseThrow(() -> new NoSuchRoomException("존재하지 않는 방입니다."));
         scoreDto scoreDto = reviewService.getAvgScoreAndCount(id);
-        return new GetDetailRoom(room, scoreDto);
+        Boolean LikeExists = roomLikeRepository.LikeExists(id, user.getId());
+        List<roomReservation> reserveList = roomReservationRepository.getAllList(id);
+
+        return new GetDetailRoom(room, scoreDto, LikeExists, reserveList);
     }
 
     public List<GetCommonRoom> findAll() {

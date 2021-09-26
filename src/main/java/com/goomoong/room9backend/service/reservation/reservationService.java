@@ -140,4 +140,13 @@ public class reservationService {
         return roomReservationRepository.getMyBookList(userId).stream()
                 .map(a -> new ReservationDto.MyList(a)).collect(Collectors.toList());
     }
+
+    public List<ReservationDto.myCustomerDto> getMyCustomer(Long roomId, User user) {
+        List<roomReservation> bookedListForHost = roomReservationRepository.getBookedListForHost(roomId, user.getId());
+        List<ReservationDto.myCustomerDto> mclist = new ArrayList<>();
+        for (roomReservation roomReservation : bookedListForHost) {
+            mclist.add(new ReservationDto.myCustomerDto(roomReservation, paymentRepository.findByRoomReservationId(roomReservation.getId())));
+        }
+        return mclist;
+    }
 }

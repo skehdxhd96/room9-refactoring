@@ -16,4 +16,9 @@ public interface roomReservationRepositoryCustom {
      * 자신이 예약한 숙소 리스트 조회
      */
     List<roomReservation> getMyBookList(Long userId);
+
+    /**
+     * 호스트용 예약내역 조회
+     */
+    List<roomReservation> getBookedListForHost(Long roomId, Long userId);
 }

@@ -1,5 +1,7 @@
 package com.goomoong.room9backend.domain.room.dto;
 
+import com.goomoong.room9backend.domain.reservation.dto.ReservationDto;
+import com.goomoong.room9backend.domain.reservation.roomReservation;
 import com.goomoong.room9backend.domain.review.Review;
 import com.goomoong.room9backend.domain.review.dto.ReviewDto;
 import com.goomoong.room9backend.domain.review.dto.scoreDto;
@@ -30,7 +32,13 @@ public class GetDetailRoom extends GetCommonRoom {
     private String userIntro;
     private String userGender;
 
-    public GetDetailRoom(Room room, scoreDto scoreDto) {
+    //이미 예약된 리스트들
+    private List<ReservationDto.booked> reserveList;
+
+    //현재 내가 좋아요 했는지 여부
+    private Boolean currentLikeStatus;
+
+    public GetDetailRoom(Room room, scoreDto scoreDto, Boolean LikeExists, List<roomReservation> reserveList) {
         super(room, scoreDto);
         this.content = room.getContent();
         this.rule = room.getRule();
@@ -38,9 +46,12 @@ public class GetDetailRoom extends GetCommonRoom {
         this.userImg = room.getUsers().getThumbnailImgUrl();
         this.userIntro = room.getUsers().getIntro();
         this.userGender = room.getUsers().getGender();
+        this.currentLikeStatus = LikeExists;
         this.room_configuration = room.getRoomConfigures()
                 .stream().map(c -> new confDto(c)).collect(Collectors.toList());
         this.room_amenity = room.getAmenities()
                 .stream().map(a -> new amenityDto(a)).collect(Collectors.toList());
+        this.reserveList = reserveList
+                .stream().map(r -> new ReservationDto.booked(r)).collect(Collectors.toList());
     }
 }

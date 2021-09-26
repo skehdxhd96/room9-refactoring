@@ -35,4 +35,16 @@ public class roomReservationRepositoryImpl implements roomReservationRepositoryC
                                 .or(roomReservation.reserveStatus.eq(ReserveStatus.DONE)))
                 .fetch();
     }
+
+    @Override
+    public List<roomReservation> getBookedListForHost(Long roomId, Long userId) {
+        return queryFactory.select(roomReservation)
+                .from(roomReservation)
+                .join(roomReservation.room).fetchJoin()
+                .join(roomReservation.users).fetchJoin()
+                .where(roomReservation.room.users.id.eq(userId),
+                        roomReservation.reserveStatus.eq(ReserveStatus.COMPLETE)
+                                .or(roomReservation.reserveStatus.eq(ReserveStatus.DONE)))
+                .fetch();
+    }
 }

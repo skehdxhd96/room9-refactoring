@@ -9,4 +9,5 @@ import java.util.List;
 public interface RoomLikeRepositoryCustom {
 
     List<RoomLike> findRoomWithGood(User user);
+    Boolean LikeExists(Long roomId, Long userId);
 }

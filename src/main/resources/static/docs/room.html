@@ -462,6 +462,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_http_request_2">http-request</a></li>
 <li><a href="#_http_response_2">http-response</a></li>
+<li><a href="#_request_headers_2">request-headers</a></li>
 <li><a href="#_path_parameters">path-parameters</a></li>
 <li><a href="#_response_fields_2">response-fields</a></li>
 </ul>
@@ -492,7 +493,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#room-myRoomList">내가만든 숙소 리스트 조회</a>
 <ul class="sectlevel2">
 <li><a href="#_http_request_6">http-request</a></li>
-<li><a href="#_request_headers_2">request-headers</a></li>
+<li><a href="#_request_headers_3">request-headers</a></li>
 <li><a href="#_http_response_5">http-response</a></li>
 <li><a href="#_response_fields_6">response-fields</a></li>
 </ul>
@@ -765,6 +766,7 @@ Content-Length: 20
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /room/1 HTTP/1.1
+Authorization: Bearer accessToken
 Host: room9.docs.com</code></pre>
 </div>
 </div>
@@ -778,7 +780,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 948
+Content-Length: 1071
 
 {
   "roomId" : 1,
@@ -791,9 +793,9 @@ Content-Length: 948
   "avgScore" : 0.0,
   "reviewCount" : 0,
   "images" : [ {
-    "url" : "https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"
+    "url" : "https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"
   }, {
-    "url" : "https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"
+    "url" : "https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"
   } ],
   "content" : "내용1입니다.",
   "rule" : "상세페이지 들어가기 전 간단한 정보만 표기합니다.",
@@ -812,10 +814,36 @@ Content-Length: 948
   } ],
   "userImg" : "mock.jpg",
   "userIntro" : "test",
-  "userGender" : "male"
+  "userGender" : "male",
+  "reserveList" : [ {
+    "startDate" : "2021-08-31",
+    "finalDate" : "2021-09-04"
+  } ],
+  "currentLikeStatus" : true
 }</code></pre>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_request_headers_2"><a class="link" href="#_request_headers_2">request-headers</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카카오 사용자 Bearer Token</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect2">
 <h3 id="_path_parameters"><a class="link" href="#_path_parameters">path-parameters</a></h3>
@@ -949,6 +977,21 @@ Content-Length: 948
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>room_amenity[].facility</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">숙소 부대시설 이름(ex 전자레인지, 도어락 ..)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>reserveList[].startDate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">현재 예약된 날짜배열. 시작날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>reserveList[].finalDate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">현재 예약된 날짜배열. 마감날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>currentLikeStatus</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">현재 상세보기중인 유저가 좋아요 눌렀는지 여부</p></td>
 </tr>
 </tbody>
 </table>
@@ -1101,7 +1144,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 554
+Content-Length: 550
 
 {
   "count" : 1,
@@ -1116,9 +1159,9 @@ Content-Length: 554
     "avgScore" : 0.0,
     "reviewCount" : 0,
     "images" : [ {
-      "url" : "https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"
+      "url" : "https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"
     }, {
-      "url" : "https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"
+      "url" : "https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"
     } ]
   } ]
 }</code></pre>
@@ -1222,10 +1265,12 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 28
+Content-Length: 76
 
 {
-  "totalPrice" : 42000
+  "totalPrice" : 48000,
+  "originalPrice" : 40000,
+  "charge" : 8000
 }</code></pre>
 </div>
 </div>
@@ -1300,7 +1345,17 @@ Content-Length: 28
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>totalPrice</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">총 가격</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">총 가격(기본가격 + 추가요금)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>originalPrice</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기본 가격(방값 x 숙박일)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>charge</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">추가 요금(추가인원 x 숙박일 x 추가요금)</p></td>
 </tr>
 </tbody>
 </table>
@@ -1321,7 +1376,7 @@ Host: room9.docs.com</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_request_headers_2"><a class="link" href="#_request_headers_2">request-headers</a></h3>
+<h3 id="_request_headers_3"><a class="link" href="#_request_headers_3">request-headers</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1350,7 +1405,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 554
+Content-Length: 550
 
 {
   "count" : 1,
@@ -1365,9 +1420,9 @@ Content-Length: 554
     "avgScore" : 0.0,
     "reviewCount" : 0,
     "images" : [ {
-      "url" : "https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"
+      "url" : "https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"
     }, {
-      "url" : "https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"
+      "url" : "https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"
     } ]
   } ]
 }</code></pre>
@@ -1472,7 +1527,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 554
+Content-Length: 550
 
 {
   "count" : 1,
@@ -1487,9 +1542,9 @@ Content-Length: 554
     "avgScore" : 0.0,
     "reviewCount" : 0,
     "images" : [ {
-      "url" : "https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"
+      "url" : "https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"
     }, {
-      "url" : "https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"
+      "url" : "https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"
     } ]
   } ]
 }</code></pre>
@@ -1595,7 +1650,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 554
+Content-Length: 550
 
 {
   "count" : 1,
@@ -1610,9 +1665,9 @@ Content-Length: 554
     "avgScore" : 0.0,
     "reviewCount" : 0,
     "images" : [ {
-      "url" : "https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"
+      "url" : "https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"
     }, {
-      "url" : "https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"
+      "url" : "https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"
     } ]
   } ]
 }</code></pre>
@@ -1820,7 +1875,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 554
+Content-Length: 550
 
 {
   "count" : 1,
@@ -1835,9 +1890,9 @@ Content-Length: 554
     "avgScore" : 0.0,
     "reviewCount" : 0,
     "images" : [ {
-      "url" : "https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"
+      "url" : "https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호pngFIle.png"
     }, {
-      "url" : "https://roomimg.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"
+      "url" : "https://room9.s3.ap-northeast-2.amazonaws.com/도메인이름/랜덤으로생성된느번호jpgFIle.jpg"
     } ]
   } ]
 }</code></pre>
@@ -1924,7 +1979,7 @@ Content-Length: 554
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2021-09-26 01:17:18 +0900
+Last updated 2021-09-26 19:14:09 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

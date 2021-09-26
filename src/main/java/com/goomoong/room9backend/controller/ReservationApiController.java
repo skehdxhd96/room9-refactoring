@@ -1,5 +1,6 @@
 package com.goomoong.room9backend.controller;
 
+import com.amazonaws.services.ec2.model.Reservation;
 import com.goomoong.room9backend.domain.reservation.dto.ReservationDto;
 import com.goomoong.room9backend.security.userdetails.CustomUserDetails;
 import com.goomoong.room9backend.service.reservation.reservationService;
@@ -41,5 +42,16 @@ public class ReservationApiController {
     public ReservationDto.bookData<List<ReservationDto.MyList>> myBookList(@AuthenticationPrincipal CustomUserDetails currentUser) {
         List<ReservationDto.MyList> myAllBook = reservationService.getMyAllBook(currentUser.getId());
         return new ReservationDto.bookData<>(myAllBook.size(), myAllBook);
+    }
+
+    /**
+     * Host 내가 올린 방 예약내역 확인하기
+     */
+    @GetMapping("/room/{roomId}/customer/list")
+    public ReservationDto.bookWithCount<List<ReservationDto.myCustomerDto>> myCustomerList(
+            @PathVariable Long roomId,
+            @AuthenticationPrincipal CustomUserDetails currentUser) {
+        List<ReservationDto.myCustomerDto> myCustomerList = reservationService.getMyCustomer(roomId, currentUser.getUser());
+        return new ReservationDto.bookWithCount<>(myCustomerList.size(), roomId, myCustomerList);
     }
 }

@@ -6,6 +6,7 @@ import com.goomoong.room9backend.config.MockSecurityFilter;
 import com.goomoong.room9backend.domain.file.File;
 import com.goomoong.room9backend.domain.file.RoomImg;
 import com.goomoong.room9backend.domain.payment.dto.paymentDto;
+import com.goomoong.room9backend.domain.payment.payment;
 import com.goomoong.room9backend.domain.reservation.ReserveStatus;
 import com.goomoong.room9backend.domain.reservation.dto.ReservationDto;
 import com.goomoong.room9backend.domain.reservation.roomReservation;
@@ -70,7 +71,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 @AutoConfigureMockMvc
 @ExtendWith({SpringExtension.class, RestDocumentationExtension.class})
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK,
+        properties = "spring.config.location="
+                + "classpath:application.properties,"
+                + "classpath:aws.yml")
 public class ReservationApiControllerTest {
 
     @MockBean
@@ -316,5 +320,81 @@ public class ReservationApiControllerTest {
                 .andExpect(jsonPath("$.booked[0].personnel").value(3))
                 .andExpect(jsonPath("$.booked[0].detailLocation").value("testLocation"))
                 .andExpect(jsonPath("$.booked[0].title").value("testTitle"));
+    }
+
+    @Test
+    @DisplayName(value = "호스트용 예약내역 확인")
+    public void getMyBookListTestToHost() throws Exception{
+        //given
+        roomReservation roomReservation = com.goomoong.room9backend.domain.reservation.roomReservation.builder()
+                .room(room)
+                .users(user)
+                .petWhether(true)
+                .personnel(3)
+                .reserveStatus(ReserveStatus.COMPLETE)
+                .startDate(LocalDateTime.now())
+                .finalDate(LocalDateTime.now().plusDays(3))
+                .build();
+
+        payment pay = payment.builder()
+                .payMethod("kakaopay")
+                .paymentStatus(true)
+                .roomReservation(roomReservation)
+                .totalPrice(100000)
+                .build();
+
+        List<ReservationDto.myCustomerDto> rmlist = new ArrayList<>();
+        rmlist.add(new ReservationDto.myCustomerDto(roomReservation, pay));
+
+
+
+        given(reservationService.getMyCustomer(any(), any())).willReturn(rmlist);
+
+        //when
+        ResultActions results = mvc.perform(RestDocumentationRequestBuilders.get("/room/{roomId}/customer/list", 1L)
+                .principal(new UsernamePasswordAuthenticationToken(CustomUserDetails.create(user), null))
+                .header("Authorization", "Bearer accessToken"));
+
+        //then
+        results
+                .andDo(print())
+                .andDo(document("reserve-mybook-host",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        requestHeaders(
+                                headerWithName("Authorization").description("카카오 사용자 Bearer Token")
+                        ),
+                        pathParameters(
+                                parameterWithName("roomId").description("숙소 아이디")
+                        ),
+                        responseFields(
+                                fieldWithPath("count").type(JsonFieldType.NUMBER).description("총 예약 개수"),
+                                fieldWithPath("roomId").type(JsonFieldType.NUMBER).description("숙소 아이디"),
+                                fieldWithPath("booked.[].userId").type(JsonFieldType.NUMBER).description("예약한 사람 아이디"),
+                                fieldWithPath("booked.[].userNickName").type(JsonFieldType.STRING).description("예약한 사람 닉네임"),
+                                fieldWithPath("booked.[].userEmail").type(JsonFieldType.STRING).description("예약한 사람 이메일"),
+                                fieldWithPath("booked.[].userBirth").type(JsonFieldType.STRING).description("예약한 사람 생년월일"),
+                                fieldWithPath("booked.[].userGender").type(JsonFieldType.STRING).description("예약한 사람 성별"),
+                                fieldWithPath("booked.[].personnel").type(JsonFieldType.NUMBER).description("예약 인원"),
+                                fieldWithPath("booked.[].startDate").type(JsonFieldType.STRING).description("예약 시작 날짜(yyyy-mm-dd)"),
+                                fieldWithPath("booked.[].finalDate").type(JsonFieldType.STRING).description("예약 마지막 날짜(yyyy-mm-dd)"),
+                                fieldWithPath("booked.[].petWhether").type(JsonFieldType.BOOLEAN).description("반려견 여부"),
+                                fieldWithPath("booked.[].paid_method").type(JsonFieldType.STRING).description("결제 방법"),
+                                fieldWithPath("booked.[].paid_amount").type(JsonFieldType.NUMBER).description("결제 총액")
+                        )
+                ))
+                .andExpect(jsonPath("$.count").value(1))
+                .andExpect(jsonPath("$.roomId").value(1))
+                .andExpect(jsonPath("$.booked[0].userId").value(1L))
+                .andExpect(jsonPath("$.booked[0].userNickName").value("mockusername"))
+                .andExpect(jsonPath("$.booked[0].userEmail").value("mock@abc"))
+                .andExpect(jsonPath("$.booked[0].userBirth").value("0101"))
+                .andExpect(jsonPath("$.booked[0].userGender").value("male"))
+                .andExpect(jsonPath("$.booked[0].personnel").value(3))
+                .andExpect(jsonPath("$.booked[0].startDate").value(AboutDate.getStringFromLocalDateTime(roomReservation.getStartDate())))
+                .andExpect(jsonPath("$.booked[0].finalDate").value(AboutDate.getStringFromLocalDateTime(roomReservation.getFinalDate())))
+                .andExpect(jsonPath("$.booked[0].petWhether").value("true"))
+                .andExpect(jsonPath("$.booked[0].paid_method").value("kakaopay"))
+                .andExpect(jsonPath("$.booked[0].paid_amount").value("100000"));
     }
 }

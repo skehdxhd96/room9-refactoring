@@ -1,5 +1,6 @@
 package com.goomoong.room9backend.domain.reservation.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.goomoong.room9backend.domain.payment.payment;
 import com.goomoong.room9backend.domain.reservation.roomReservation;
 import com.goomoong.room9backend.util.AboutDate;
 import lombok.*;
@@ -68,6 +69,11 @@ public class ReservationDto {
     public static class booked {
         private String startDate;
         private String finalDate;
+
+        public booked(roomReservation roomReservation) {
+            this.startDate = AboutDate.getStringFromLocalDateTime(roomReservation.getStartDate());
+            this.finalDate = AboutDate.getStringFromLocalDateTime(roomReservation.getFinalDate());
+        }
     }
 
     @Getter
@@ -91,6 +97,46 @@ public class ReservationDto {
             this.finalDate = AboutDate.getStringFromLocalDateTime(roomReservation.getFinalDate());
             this.detailLocation = roomReservation.getRoom().getDetailLocation();
             this.title = roomReservation.getRoom().getTitle();
+        }
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class myCustomerDto {
+        /**
+         * 예약한 사용자 정보
+         */
+        private Long userId;
+        private String userNickName;
+        private String userEmail;
+        private String userBirth;
+        private String userGender;
+
+        /**
+         * 예약 결제 정보
+         */
+        private Integer personnel;
+        private String startDate;
+        private String finalDate;
+        private Boolean petWhether;
+        private String paid_method;
+        private Integer paid_amount;
+
+        public myCustomerDto(roomReservation roomReservation, payment payment) {
+            this.userId = roomReservation.getUsers().getId();
+            this.userNickName = roomReservation.getUsers().getNickname();
+            this.userEmail = roomReservation.getUsers().getEmail();
+            this.userBirth = roomReservation.getUsers().getBirthday();
+            this.userGender = roomReservation.getUsers().getGender();
+            this.personnel = roomReservation.getPersonnel();
+            this.startDate = AboutDate.getStringFromLocalDateTime(roomReservation.getStartDate());
+            this.finalDate = AboutDate.getStringFromLocalDateTime(roomReservation.getFinalDate());
+            this.petWhether = roomReservation.getPetWhether();
+            this.paid_method = payment.getPayMethod();
+            this.paid_amount = payment.getTotalPrice();
         }
     }
 }
