@@ -159,16 +159,11 @@ public class ReservationApiControllerTest {
                 .finalDate(testResponse.getFinalDate())
                 .personnel(3)
                 .petWhether(testResponse.getPetWhether())
-                .aboutPayment("{\"paymentId\":\"merchant_uid\",\"paymentMethod\":\"kakaopay\",\"paymentStatus\":true, \"paymentAmount\":100000, \"paymentErrorMsg\":\"error_msg\"}")
+                .aboutPayment("{\"merchant_uid\":\"merchant_uid\",\"pg_provider\":\"kakaopay\",\"success\":true, \"paid_amount\":100000, \"error_msg\":\"error_msg\"}")
                 .build();
 
         //when
         ResultActions result = mvc.perform(post("/room/book/{roomId}", 1L)
-//                .param("startDate","2021-09-20")
-//                .param("finalDate","2021-09-21")
-//                .param("personnel", "4")
-//                .param("petWhether", "true")
-//                .param("aboutPayment", "{\"paymentId\":\"merchant_uid\",\"paymentMethod\":\"kakaopay\",\"paymentStatus\":true, \"paymentAmount\":100000, \"paymentErrorMsg\":\"error_msg\"}")
                 .content(objectMapper.writeValueAsString(request))
                 .principal(new UsernamePasswordAuthenticationToken(CustomUserDetails.create(user), null))
                 .header("Authorization", "Bearer accessToken")
@@ -193,11 +188,11 @@ public class ReservationApiControllerTest {
                                 fieldWithPath("personnel").type(JsonFieldType.NUMBER).description("총 인원"),
                                 fieldWithPath("petWhether").type(JsonFieldType.BOOLEAN).description("반려견 여부"),
                                 fieldWithPath("aboutPayment").type(JsonFieldType.STRING).description("결제 데이터(" +
-                                        "**paymentId : 아임포트 merchant_uid**\n" +
-                                        "/**paymentMethod : 아임포트 pay_method**\n" +
-                                        "/**paymentStatus : 아임포트 success**\n" +
-                                        "/**paymentAmount : 아임포트 paid_amount**\n" +
-                                        "/**paymentErrorMsg : 아임포트 error_msg(결제 성공일 경우 null)**")
+                                        "**merchant_uid : 아임포트 merchant_uid**\n" +
+                                        "/**pg_provider : 아임포트 pg_provider**\n" +
+                                        "/**success : 아임포트 success**\n" +
+                                        "/**paid_amount : 아임포트 paid_amount**\n" +
+                                        "/**error_msg : 아임포트 error_msg(결제 성공일 경우 null)**")
                         ),
                         responseFields(
                                 fieldWithPath("reservationId").type(JsonFieldType.NUMBER).description("예약 아이디"),

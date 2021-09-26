@@ -20,6 +20,8 @@ public class roomData {
     @Builder
     public static class price {
         private Long totalPrice;
+        private Long originalPrice;
+        private Long charge;
     }
 
     @Data

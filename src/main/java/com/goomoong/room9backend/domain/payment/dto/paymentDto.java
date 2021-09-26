@@ -10,10 +10,10 @@ public class paymentDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class request {
-        private String paymentId;
-        private String paymentMethod;
-        private Boolean paymentStatus;
-        private Integer paymentAmount;
-        private String paymentErrorMsg;
+        private String merchant_uid;
+        private String pg_provider;
+        private Boolean success;
+        private Integer paid_amount;
+        private String error_msg;
     }
 }

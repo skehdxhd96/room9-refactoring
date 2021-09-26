@@ -88,20 +88,32 @@ public class RoomService {
         return roomList;
     }
 
-    public long getTotalPrice(Long id, priceDto priceDto) {
+    public roomData.price getTotalPrice(Long id, priceDto priceDto) {
 
         Room room = roomRepository.findById(id).orElseThrow(() -> new NoSuchRoomException("존재하지 않는 방입니다."));
         long days = compareDay(priceDto.getStartDate(), priceDto.getFinalDate());
 
         if(priceDto.getPersonnel() == null) {
-            return room.getPrice() * days;
+            return roomData.price.builder()
+                    .totalPrice(room.getPrice() * days)
+                    .originalPrice(room.getPrice() * days)
+                    .charge(Long.valueOf(0))
+                    .build();
         }
 
         if(room.getLimited() < priceDto.getPersonnel()) { // 추가요금 붙는상황
             long addCharge = room.getCharge() * (priceDto.getPersonnel() - room.getLimited()) * days;
-            return addCharge + room.getPrice() * days;
+            return roomData.price.builder()
+                    .totalPrice(addCharge + room.getPrice() * days)
+                    .originalPrice(room.getPrice() * days)
+                    .charge(addCharge)
+                    .build();
         }
-        return room.getPrice() * days;
+        return roomData.price.builder()
+                .totalPrice(room.getPrice() * days)
+                .originalPrice(room.getPrice() * days)
+                .charge(Long.valueOf(0))
+                .build();
     }
 
     public List<GetCommonRoom> getMyRoom(User user) {
