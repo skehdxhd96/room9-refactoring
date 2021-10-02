@@ -1,19 +1,18 @@
 package com.goomoong.room9backend.domain.review.dto;
 
-import com.goomoong.room9backend.domain.review.Review;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
-import java.time.LocalDateTime;
 
 @Data
 @Builder
 public class ReviewDto{
 
     private Long id;
+    private String name;
+    private String nickname;
+    private String thumbnailImgUrl;
     private String reviewContent;
-    private LocalDateTime reviewCreated;
-    private LocalDateTime reviewUpdated;
+    private String reviewCreated;
+    private String reviewUpdated;
     private int reviewScore;
 }
