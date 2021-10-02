@@ -9,6 +9,7 @@ import com.goomoong.room9backend.repository.room.RoomRepository;
 import com.goomoong.room9backend.security.userdetails.CustomUserDetails;
 import com.goomoong.room9backend.service.ReviewService;
 import com.goomoong.room9backend.service.UserService;
+import com.goomoong.room9backend.util.AboutDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -41,17 +42,7 @@ public class ReviewApiController {
             reviewSearchDto.setRoom(null);
 
         List<Review> findReviews = reviewService.findByUserAndRoom(reviewSearchDto);
-
-        List<ReviewDto> collect = findReviews.stream()
-                .map(r -> ReviewDto.builder()
-                        .id(r.getId())
-                        .reviewContent(r.getReviewContent())
-                        .reviewScore(r.getReviewScore())
-                        .reviewCreated(r.getCreatedDate())
-                        .reviewUpdated(r.getUpdatedDate())
-                        .build()
-                )
-                .collect(Collectors.toList());
+        List<ReviewDto> collect = reviewService.selectReview(findReviews);
 
         return new SelectReviewResultDto(collect);
     }
@@ -59,18 +50,7 @@ public class ReviewApiController {
     @GetMapping("/api/v1/reviews/latest")
     public SelectReviewResultDto selectLatestReviewV1(){
         List<Review> findReviews = reviewService.findLatestReview();
-
-        List<ReviewDto> collect = findReviews.stream()
-                .map(r -> ReviewDto.builder()
-                        .id(r.getId())
-                        .reviewContent(r.getReviewContent())
-                        .reviewScore(r.getReviewScore())
-                        .reviewCreated(r.getCreatedDate())
-                        .reviewUpdated(r.getUpdatedDate())
-                        .build()
-                )
-                .collect(Collectors.toList());
-
+        List<ReviewDto> collect = reviewService.selectReview(findReviews);
         return new SelectReviewResultDto(collect);
     }
 

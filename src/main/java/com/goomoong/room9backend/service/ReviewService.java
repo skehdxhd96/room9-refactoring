@@ -1,11 +1,13 @@
 package com.goomoong.room9backend.service;
 
 import com.goomoong.room9backend.domain.review.Review;
+import com.goomoong.room9backend.domain.review.dto.ReviewDto;
 import com.goomoong.room9backend.domain.review.dto.ReviewSearchDto;
 import com.goomoong.room9backend.domain.review.dto.scoreDto;
 import com.goomoong.room9backend.exception.NoSuchReviewException;
 import com.goomoong.room9backend.exception.NotAllowedUserException;
 import com.goomoong.room9backend.repository.review.ReviewRepository;
+import com.goomoong.room9backend.util.AboutDate;
 import com.goomoong.room9backend.util.AboutScore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -57,6 +60,21 @@ public class ReviewService {
 
     public List<Review> findByUserAndRoom(ReviewSearchDto reviewSearchDto){
         return reviewRepository.findByUserAndRoom(reviewSearchDto);
+    }
+
+    public List<ReviewDto> selectReview(List<Review> reviews){
+        return reviews.stream().map(r -> ReviewDto.builder()
+                        .id(r.getId())
+                        .name(r.getUser().getName())
+                        .nickname(r.getUser().getNickname())
+                        .thumbnailImgUrl(r.getUser().getThumbnailImgUrl())
+                        .reviewContent(r.getReviewContent())
+                        .reviewScore(r.getReviewScore())
+                        .reviewCreated(AboutDate.getStringFromLocalDateTime(r.getCreatedDate()))
+                        .reviewUpdated(AboutDate.getStringFromLocalDateTime(r.getUpdatedDate()))
+                        .build()
+                )
+                .collect(Collectors.toList());
     }
 
     public scoreDto getAvgScoreAndCount(Long roomId) {

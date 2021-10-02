@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.goomoong.room9backend.config.MockSecurityFilter;
 import com.goomoong.room9backend.domain.review.Review;
 import com.goomoong.room9backend.domain.review.dto.CreateReviewRequestDto;
+import com.goomoong.room9backend.domain.review.dto.ReviewDto;
 import com.goomoong.room9backend.domain.review.dto.ReviewSearchDto;
 import com.goomoong.room9backend.domain.review.dto.UpdateReviewRequestDto;
 import com.goomoong.room9backend.domain.room.Room;
@@ -13,6 +14,7 @@ import com.goomoong.room9backend.repository.room.RoomRepository;
 import com.goomoong.room9backend.security.userdetails.CustomUserDetails;
 import com.goomoong.room9backend.service.ReviewService;
 import com.goomoong.room9backend.service.UserService;
+import com.goomoong.room9backend.util.AboutDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,6 +34,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,6 +80,10 @@ class ReviewApiControllerTest {
     private RoomRepository roomRepository;
 
     private Review review;
+    private Review review1;
+    private ReviewDto reviewDto1;
+    private ReviewDto reviewDto2;
+    private ReviewDto reviewDto3;
     private User user;
     private Room room;
 
@@ -87,14 +94,66 @@ class ReviewApiControllerTest {
                 .apply(springSecurity(new MockSecurityFilter()))
                 .build();
 
-        user = User.builder().id(1L).accountId("1").name("mock").nickname("mock").role(Role.GUEST).thumbnailImgUrl("mock.jpg").email("mock@abc").birthday("0101").gender("male").intro("test").build();;
-        room = Room.builder().id(1L).build();
+        user = User.builder()
+                .id(1L)
+                .accountId("1")
+                .name("mock")
+                .nickname("mockusername")
+                .role(Role.HOST)
+                .thumbnailImgUrl("mock.jpg")
+                .email("mock@abc")
+                .birthday("0101")
+                .gender("male")
+                .intro("test").build();
+
+        room = Room.builder()
+                .id(1L)
+                .users(user)
+                .limited(10)
+                .price(10000)
+                .title("아메리카노")
+                .content("내용1입니다.")
+                .detailLocation("서울")
+                .rule("상세페이지 들어가기 전 간단한 정보만 표기합니다.")
+                .charge(1000)
+                .liked(3).build();
+
         review = Review.builder()
                 .id(1L)
                 .user(user)
                 .room(room)
                 .reviewContent("test")
                 .reviewScore(1)
+                .build();
+
+        reviewDto1 = ReviewDto.builder()
+                .id(1L)
+                .name("mock1")
+                .nickname("mockusername1")
+                .reviewContent("test1")
+                .reviewCreated(AboutDate.getStringFromLocalDateTime(LocalDateTime.now()))
+                .reviewUpdated(AboutDate.getStringFromLocalDateTime(LocalDateTime.now()))
+                .reviewScore(1)
+                .build();
+
+        reviewDto2 = ReviewDto.builder()
+                .id(2L)
+                .name("mock2")
+                .nickname("mockusername2")
+                .reviewContent("test2")
+                .reviewCreated(AboutDate.getStringFromLocalDateTime(LocalDateTime.now().plusDays(1)))
+                .reviewUpdated(AboutDate.getStringFromLocalDateTime(LocalDateTime.now().plusDays(1)))
+                .reviewScore(2)
+                .build();
+
+        reviewDto3 = ReviewDto.builder()
+                .id(3L)
+                .name("mock3")
+                .nickname("mockusername3")
+                .reviewContent("test3")
+                .reviewCreated(AboutDate.getStringFromLocalDateTime(LocalDateTime.now().plusDays(2)))
+                .reviewUpdated(AboutDate.getStringFromLocalDateTime(LocalDateTime.now().plusDays(2)))
+                .reviewScore(3)
                 .build();
     }
 
@@ -104,9 +163,13 @@ class ReviewApiControllerTest {
         List<Review> reviews = new ArrayList<>();
         reviews.add(review);
 
+        List<ReviewDto> reviewDtos = new ArrayList<>();
+        reviewDtos.add(reviewDto1);
+
         given(userService.findById(1L)).willReturn(user);
 //        given(roomRepository.findById(1L).orElse(null)).willReturn(room);
         given(reviewService.findByUserAndRoom(any(ReviewSearchDto.class))).willReturn(reviews);
+        given(reviewService.selectReview(any(List.class))).willReturn(reviewDtos);
 
         //when
         ResultActions result = mvc.perform(get("/api/v1/reviews").param("user","1").param("room","1"));
@@ -122,6 +185,9 @@ class ReviewApiControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("data[].id").description("ID"),
+                                fieldWithPath("data[].name").description("작성자"),
+                                fieldWithPath("data[].nickname").description("닉네임"),
+                                fieldWithPath("data[].thumbnailImgUrl").description("아바타 이미지 url"),
                                 fieldWithPath("data[].reviewContent").description("내용"),
                                 fieldWithPath("data[].reviewCreated").description("생성 시각"),
                                 fieldWithPath("data[].reviewUpdated").description("수정 시각"),
@@ -130,7 +196,7 @@ class ReviewApiControllerTest {
                 ))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data[0].id").value(1L))
-                .andExpect(jsonPath("$.data[0].reviewContent").value("test"))
+                .andExpect(jsonPath("$.data[0].reviewContent").value("test1"))
                 .andExpect(jsonPath("$.data[0].reviewScore").value(1))
                 .andDo(print());
 
@@ -140,6 +206,7 @@ class ReviewApiControllerTest {
     public void 최근_리뷰_조회() throws Exception{
         //given
         List<Review> reviews = new ArrayList<>();
+
 
         Review review1 = new Review();
         Review review2 = new Review();
@@ -153,7 +220,13 @@ class ReviewApiControllerTest {
         reviews.add(review2);
         reviews.add(review1);
 
+        List<ReviewDto> reviewDtos = new ArrayList<>();
+        reviewDtos.add(reviewDto3);
+        reviewDtos.add(reviewDto2);
+        reviewDtos.add(reviewDto1);
+
         given(reviewService.findLatestReview()).willReturn(reviews);
+        given(reviewService.selectReview(any(List.class))).willReturn(reviewDtos);
 
         //when
         ResultActions result = mvc.perform(get("/api/v1/reviews/latest"));
@@ -165,6 +238,9 @@ class ReviewApiControllerTest {
                         getDocumentResponse(),
                         responseFields(
                                 fieldWithPath("data[].id").description("ID"),
+                                fieldWithPath("data[].name").description("작성자"),
+                                fieldWithPath("data[].nickname").description("닉네임"),
+                                fieldWithPath("data[].thumbnailImgUrl").description("아바타 이미지 url"),
                                 fieldWithPath("data[].reviewContent").description("내용"),
                                 fieldWithPath("data[].reviewCreated").description("생성 시각"),
                                 fieldWithPath("data[].reviewUpdated").description("수정 시각"),
