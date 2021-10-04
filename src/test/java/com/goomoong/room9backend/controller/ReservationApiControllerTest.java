@@ -343,12 +343,15 @@ public class ReservationApiControllerTest {
         List<ReservationDto.myCustomerDto> rmlist = new ArrayList<>();
         rmlist.add(new ReservationDto.myCustomerDto(roomReservation, pay));
 
+        ReservationDto.CustomerData<List<ReservationDto.myCustomerDto>> data1 = new ReservationDto.CustomerData<>(1L, 1, rmlist);
+        List<ReservationDto.CustomerData<List<ReservationDto.myCustomerDto>>> data2 = new ArrayList<>();
+        data2.add(data1);
+        ReservationDto.bookData<List<ReservationDto.CustomerData<List<ReservationDto.myCustomerDto>>>> finalData = new ReservationDto.bookData<>(1, data2);
 
-
-        given(reservationService.getMyCustomer(any(), any())).willReturn(rmlist);
+        given(reservationService.getMyCustomer(any())).willReturn(finalData);
 
         //when
-        ResultActions results = mvc.perform(RestDocumentationRequestBuilders.get("/room/{roomId}/customer/list", 1L)
+        ResultActions results = mvc.perform(RestDocumentationRequestBuilders.get("/room/customer/list")
                 .principal(new UsernamePasswordAuthenticationToken(CustomUserDetails.create(user), null))
                 .header("Authorization", "Bearer accessToken"));
 
@@ -361,37 +364,36 @@ public class ReservationApiControllerTest {
                         requestHeaders(
                                 headerWithName("Authorization").description("카카오 사용자 Bearer Token")
                         ),
-                        pathParameters(
-                                parameterWithName("roomId").description("숙소 아이디")
-                        ),
                         responseFields(
-                                fieldWithPath("count").type(JsonFieldType.NUMBER).description("총 예약 개수"),
-                                fieldWithPath("roomId").type(JsonFieldType.NUMBER).description("숙소 아이디"),
-                                fieldWithPath("booked.[].userId").type(JsonFieldType.NUMBER).description("예약한 사람 아이디"),
-                                fieldWithPath("booked.[].userNickName").type(JsonFieldType.STRING).description("예약한 사람 닉네임"),
-                                fieldWithPath("booked.[].userEmail").type(JsonFieldType.STRING).description("예약한 사람 이메일"),
-                                fieldWithPath("booked.[].userBirth").type(JsonFieldType.STRING).description("예약한 사람 생년월일"),
-                                fieldWithPath("booked.[].userGender").type(JsonFieldType.STRING).description("예약한 사람 성별"),
-                                fieldWithPath("booked.[].personnel").type(JsonFieldType.NUMBER).description("예약 인원"),
-                                fieldWithPath("booked.[].startDate").type(JsonFieldType.STRING).description("예약 시작 날짜(yyyy-mm-dd)"),
-                                fieldWithPath("booked.[].finalDate").type(JsonFieldType.STRING).description("예약 마지막 날짜(yyyy-mm-dd)"),
-                                fieldWithPath("booked.[].petWhether").type(JsonFieldType.BOOLEAN).description("반려견 여부"),
-                                fieldWithPath("booked.[].paid_method").type(JsonFieldType.STRING).description("결제 방법"),
-                                fieldWithPath("booked.[].paid_amount").type(JsonFieldType.NUMBER).description("결제 총액")
+                                fieldWithPath("count").type(JsonFieldType.NUMBER).description("올린 숙소 총 개수"),
+                                fieldWithPath("booked.[].roomId").type(JsonFieldType.NUMBER).description("방 아이디"),
+                                fieldWithPath("booked.[].bookedCount").type(JsonFieldType.NUMBER).description("현재 숙소 예약 개수"),
+                                fieldWithPath("booked.[].reserveData.[].userId").type(JsonFieldType.NUMBER).description("예약한 사람 아이디"),
+                                fieldWithPath("booked.[].reserveData.[].userNickName").type(JsonFieldType.STRING).description("예약한 사람 닉네임"),
+                                fieldWithPath("booked.[].reserveData.[].userEmail").type(JsonFieldType.STRING).description("예약한 사람 이메일"),
+                                fieldWithPath("booked.[].reserveData.[].userBirth").type(JsonFieldType.STRING).description("예약한 사람 생년월일"),
+                                fieldWithPath("booked.[].reserveData.[].userGender").type(JsonFieldType.STRING).description("예약한 사람 성별"),
+                                fieldWithPath("booked.[].reserveData.[].personnel").type(JsonFieldType.NUMBER).description("예약 인원"),
+                                fieldWithPath("booked.[].reserveData.[].startDate").type(JsonFieldType.STRING).description("예약 시작 날짜(yyyy-mm-dd)"),
+                                fieldWithPath("booked.[].reserveData.[].finalDate").type(JsonFieldType.STRING).description("예약 마지막 날짜(yyyy-mm-dd)"),
+                                fieldWithPath("booked.[].reserveData.[].petWhether").type(JsonFieldType.BOOLEAN).description("반려견 여부"),
+                                fieldWithPath("booked.[].reserveData.[].paid_method").type(JsonFieldType.STRING).description("결제 방법"),
+                                fieldWithPath("booked.[].reserveData.[].paid_amount").type(JsonFieldType.NUMBER).description("결제 총액")
                         )
                 ))
                 .andExpect(jsonPath("$.count").value(1))
-                .andExpect(jsonPath("$.roomId").value(1))
-                .andExpect(jsonPath("$.booked[0].userId").value(1L))
-                .andExpect(jsonPath("$.booked[0].userNickName").value("mockusername"))
-                .andExpect(jsonPath("$.booked[0].userEmail").value("mock@abc"))
-                .andExpect(jsonPath("$.booked[0].userBirth").value("0101"))
-                .andExpect(jsonPath("$.booked[0].userGender").value("male"))
-                .andExpect(jsonPath("$.booked[0].personnel").value(3))
-                .andExpect(jsonPath("$.booked[0].startDate").value(AboutDate.getStringFromLocalDateTime(roomReservation.getStartDate())))
-                .andExpect(jsonPath("$.booked[0].finalDate").value(AboutDate.getStringFromLocalDateTime(roomReservation.getFinalDate())))
-                .andExpect(jsonPath("$.booked[0].petWhether").value("true"))
-                .andExpect(jsonPath("$.booked[0].paid_method").value("kakaopay"))
-                .andExpect(jsonPath("$.booked[0].paid_amount").value("100000"));
+                .andExpect(jsonPath("$.booked[0].roomId").value(1L))
+                .andExpect(jsonPath("$.booked[0].bookedCount").value(1))
+                .andExpect(jsonPath("$.booked[0].reserveData[0].userId").value(1L))
+                .andExpect(jsonPath("$.booked[0].reserveData[0].userNickName").value("mockusername"))
+                .andExpect(jsonPath("$.booked[0].reserveData[0].userEmail").value("mock@abc"))
+                .andExpect(jsonPath("$.booked[0].reserveData[0].userBirth").value("0101"))
+                .andExpect(jsonPath("$.booked[0].reserveData[0].userGender").value("male"))
+                .andExpect(jsonPath("$.booked[0].reserveData[0].personnel").value(3))
+                .andExpect(jsonPath("$.booked[0].reserveData[0].startDate").value(AboutDate.getStringFromLocalDateTime(roomReservation.getStartDate())))
+                .andExpect(jsonPath("$.booked[0].reserveData[0].finalDate").value(AboutDate.getStringFromLocalDateTime(roomReservation.getFinalDate())))
+                .andExpect(jsonPath("$.booked[0].reserveData[0].petWhether").value("true"))
+                .andExpect(jsonPath("$.booked[0].reserveData[0].paid_method").value("kakaopay"))
+                .andExpect(jsonPath("$.booked[0].reserveData[0].paid_amount").value("100000"));
     }
 }

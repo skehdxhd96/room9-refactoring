@@ -20,5 +20,5 @@ public interface roomReservationRepositoryCustom {
     /**
      * 호스트용 예약내역 조회
      */
-    List<roomReservation> getBookedListForHost(Long roomId, Long userId);
+    List<roomReservation> getBookedListForHost(Long userId, Long roomId);
 }

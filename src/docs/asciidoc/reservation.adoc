@@ -79,9 +79,6 @@ include::{snippets}/reserve-myBook/response-fields.adoc[]
 === http-request
 include::{snippets}/reserve-mybook-host/http-request.adoc[]
 
-=== path-parameters
-include::{snippets}/reserve-mybook-host/path-parameters.adoc[]
-
 === request-headers
 include::{snippets}/reserve-mybook-host/request-headers.adoc[]
 
