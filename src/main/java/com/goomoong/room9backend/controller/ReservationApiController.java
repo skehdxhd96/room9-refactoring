@@ -47,11 +47,9 @@ public class ReservationApiController {
     /**
      * Host 내가 올린 방 예약내역 확인하기
      */
-    @GetMapping("/room/{roomId}/customer/list")
-    public ReservationDto.bookWithCount<List<ReservationDto.myCustomerDto>> myCustomerList(
-            @PathVariable Long roomId,
+    @GetMapping("/room/customer/list")
+    public ReservationDto.bookData<List<ReservationDto.CustomerData<List<ReservationDto.myCustomerDto>>>> myCustomerList(
             @AuthenticationPrincipal CustomUserDetails currentUser) {
-        List<ReservationDto.myCustomerDto> myCustomerList = reservationService.getMyCustomer(roomId, currentUser.getUser());
-        return new ReservationDto.bookWithCount<>(myCustomerList.size(), roomId, myCustomerList);
+        return reservationService.getMyCustomer(currentUser.getUser());
     }
 }

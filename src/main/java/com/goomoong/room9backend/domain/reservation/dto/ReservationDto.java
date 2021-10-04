@@ -56,6 +56,15 @@ public class ReservationDto {
     @Data
     @AllArgsConstructor
     @Builder
+    public static class CustomerData<T> {
+        private Long roomId;
+        private int bookedCount;
+        private T reserveData;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @Builder
     public static class bookData<T> {
         private int count;
         private T booked;

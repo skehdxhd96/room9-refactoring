@@ -44,8 +44,6 @@ public class reservationService {
     private final roomReservationRepository roomReservationRepository;
     private final RoomRepository roomRepository;
     private final paymentRepository paymentRepository;
-    private final RoomService roomService;
-    private final UserService userService;
 
     @Transactional
     public ReservationDto.response reserveRoom(User user, Long roomId, ReservationDto.request request){
@@ -141,12 +139,19 @@ public class reservationService {
                 .map(a -> new ReservationDto.MyList(a)).collect(Collectors.toList());
     }
 
-    public List<ReservationDto.myCustomerDto> getMyCustomer(Long roomId, User user) {
-        List<roomReservation> bookedListForHost = roomReservationRepository.getBookedListForHost(roomId, user.getId());
-        List<ReservationDto.myCustomerDto> mclist = new ArrayList<>();
-        for (roomReservation roomReservation : bookedListForHost) {
-            mclist.add(new ReservationDto.myCustomerDto(roomReservation, paymentRepository.findByRoomReservationId(roomReservation.getId())));
+    public ReservationDto.bookData<List<ReservationDto.CustomerData<List<ReservationDto.myCustomerDto>>>> getMyCustomer(User user) {
+        List<Room> roomList = roomRepository.findMyRoom(user);
+        List<ReservationDto.CustomerData<List<ReservationDto.myCustomerDto>>> customerData = new ArrayList<>();
+        for(Room room : roomList) {
+            Integer index = 0;
+            List<roomReservation> bookedListForHost = roomReservationRepository.getBookedListForHost(user.getId(), room.getId());
+            List<ReservationDto.myCustomerDto> mclist = new ArrayList<>();
+            for (roomReservation roomReservation : bookedListForHost) {
+                index++;
+                mclist.add(new ReservationDto.myCustomerDto(roomReservation, paymentRepository.findByRoomReservationId(roomReservation.getId())));
+            }
+            customerData.add(new ReservationDto.CustomerData(room.getId(), index, mclist));
         }
-        return mclist;
+        return new ReservationDto.bookData<>(roomList.size(), customerData);
     }
 }
