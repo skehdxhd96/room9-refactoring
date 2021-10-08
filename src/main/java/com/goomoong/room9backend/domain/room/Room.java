@@ -8,6 +8,7 @@ import com.goomoong.room9backend.domain.room.dto.CreatedRequestRoomDto;
 import com.goomoong.room9backend.domain.room.dto.UpdateRequestRoomDto;
 import com.goomoong.room9backend.domain.room.dto.confDto;
 import com.goomoong.room9backend.domain.user.User;
+import com.goomoong.room9backend.util.AboutCovid;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -59,6 +60,8 @@ public class Room extends BaseEntity {
     private String rule; // 규칙
     private int charge; // 추가인원 요금
     private int liked; // 좋아요
+    private Integer disinfectionCount;
+    private String disinfectionRank;
 
     //== 양방향 연관관계 메서드 ==//
     public void setUsers(User users) {
@@ -68,6 +71,8 @@ public class Room extends BaseEntity {
 
     public static Room createRoom(User users, CreatedRequestRoomDto request,
                                   Set<RoomConfiguration> roomConfig, Set<Amenity> roomAmenities) {
+
+        Integer count = AboutCovid.setCovidCount();
 
         return Room.builder()
                 .users(users)
@@ -79,6 +84,8 @@ public class Room extends BaseEntity {
                 .rule(request.getRule())
                 .charge(request.getAddCharge())
                 .liked(0)
+                .disinfectionCount(count)
+                .disinfectionRank(AboutCovid.setCovidRank(count))
                 .roomConfigures(roomConfig)
                 .amenities(roomAmenities)
                 .build();

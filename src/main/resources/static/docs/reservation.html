@@ -481,7 +481,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#reserve-mybook-host">호스트용 예약 리스트 조회</a>
 <ul class="sectlevel2">
 <li><a href="#_http_request_4">http-request</a></li>
-<li><a href="#_path_parameters_3">path-parameters</a></li>
 <li><a href="#_request_headers_3">request-headers</a></li>
 <li><a href="#_response_body_4">response-body</a></li>
 <li><a href="#_response_fields_4">response-fields</a></li>
@@ -763,8 +762,8 @@ Content-Length: 127
   "count" : 1,
   "roomId" : 1,
   "booked" : [ {
-    "startDate" : "2021-09-26",
-    "finalDate" : "2021-09-29"
+    "startDate" : "2021-10-08",
+    "finalDate" : "2021-10-11"
   } ]
 }</code></pre>
 </div>
@@ -800,8 +799,8 @@ Content-Length: 127
   "count" : 1,
   "roomId" : 1,
   "booked" : [ {
-    "startDate" : "2021-09-26",
-    "finalDate" : "2021-09-29"
+    "startDate" : "2021-10-08",
+    "finalDate" : "2021-10-11"
   } ]
 }</code></pre>
 </div>
@@ -877,8 +876,8 @@ Content-Length: 219
   "booked" : [ {
     "roomId" : 1,
     "personnel" : 3,
-    "startDate" : "2021-09-26",
-    "finalDate" : "2021-09-29",
+    "startDate" : "2021-10-08",
+    "finalDate" : "2021-10-11",
     "detailLocation" : "testLocation",
     "title" : "testTitle"
   } ]
@@ -916,8 +915,8 @@ Content-Length: 219
   "booked" : [ {
     "roomId" : 1,
     "personnel" : 3,
-    "startDate" : "2021-09-26",
-    "finalDate" : "2021-09-29",
+    "startDate" : "2021-10-08",
+    "finalDate" : "2021-10-11",
     "detailLocation" : "testLocation",
     "title" : "testTitle"
   } ]
@@ -988,33 +987,11 @@ Content-Length: 219
 <h3 id="_http_request_4"><a class="link" href="#_http_request_4">http-request</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /room/1/customer/list HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /room/customer/list HTTP/1.1
 Authorization: Bearer accessToken
 Host: room9.docs.com</code></pre>
 </div>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_path_parameters_3"><a class="link" href="#_path_parameters_3">path-parameters</a></h3>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 3. /room/{roomId}/customer/list</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>roomId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">숙소 아이디</p></td>
-</tr>
-</tbody>
-</table>
 </div>
 <div class="sect2">
 <h3 id="_request_headers_3"><a class="link" href="#_request_headers_3">request-headers</a></h3>
@@ -1043,19 +1020,22 @@ Host: room9.docs.com</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
   "count" : 1,
-  "roomId" : 1,
   "booked" : [ {
-    "userId" : 1,
-    "userNickName" : "mockusername",
-    "userEmail" : "mock@abc",
-    "userBirth" : "0101",
-    "userGender" : "male",
-    "personnel" : 3,
-    "startDate" : "2021-09-26",
-    "finalDate" : "2021-09-29",
-    "petWhether" : true,
-    "paid_method" : "kakaopay",
-    "paid_amount" : 100000
+    "roomId" : 1,
+    "bookedCount" : 1,
+    "reserveData" : [ {
+      "userId" : 1,
+      "userNickName" : "mockusername",
+      "userEmail" : "mock@abc",
+      "userBirth" : "0101",
+      "userGender" : "male",
+      "personnel" : 3,
+      "startDate" : "2021-10-08",
+      "finalDate" : "2021-10-11",
+      "petWhether" : true,
+      "paid_method" : "kakaopay",
+      "paid_amount" : 100000
+    } ]
   } ]
 }</code></pre>
 </div>
@@ -1080,65 +1060,70 @@ Host: room9.docs.com</code></pre>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>count</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">총 예약 개수</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">올린 숙소 총 개수</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>roomId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].roomId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">숙소 아이디</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">방 아이디</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].userId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].bookedCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">현재 숙소 예약 개수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].reserveData.[].userId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">예약한 사람 아이디</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].userNickName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].reserveData.[].userNickName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">예약한 사람 닉네임</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].userEmail</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].reserveData.[].userEmail</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">예약한 사람 이메일</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].userBirth</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].reserveData.[].userBirth</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">예약한 사람 생년월일</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].userGender</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].reserveData.[].userGender</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">예약한 사람 성별</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].personnel</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].reserveData.[].personnel</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">예약 인원</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].startDate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].reserveData.[].startDate</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">예약 시작 날짜(yyyy-mm-dd)</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].finalDate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].reserveData.[].finalDate</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">예약 마지막 날짜(yyyy-mm-dd)</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].petWhether</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].reserveData.[].petWhether</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">반려견 여부</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].paid_method</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].reserveData.[].paid_method</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">결제 방법</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].paid_amount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>booked.[].reserveData.[].paid_amount</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">결제 총액</p></td>
 </tr>
@@ -1151,7 +1136,7 @@ Host: room9.docs.com</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2021-09-26 19:11:39 +0900
+Last updated 2021-10-08 17:35:43 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

@@ -780,7 +780,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 1071
+Content-Length: 1133
 
 {
   "roomId" : 1,
@@ -800,6 +800,8 @@ Content-Length: 1071
   "content" : "내용1입니다.",
   "rule" : "상세페이지 들어가기 전 간단한 정보만 표기합니다.",
   "charge" : 1000,
+  "disinfectionCount" : 7,
+  "disinfectionRank" : "우수",
   "room_configuration" : [ {
     "confType" : "화장실",
     "count" : 3
@@ -952,6 +954,16 @@ Content-Length: 1071
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>charge</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">제한 인원 초과시 추가요금</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>disinfectionCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">한달동안 방역 횟수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>disinfectionRank</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">방역 횟수에 따른 등급</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>avgScore</code></p></td>
@@ -1979,7 +1991,7 @@ Content-Length: 550
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2021-09-26 19:14:09 +0900
+Last updated 2021-10-08 17:35:43 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
