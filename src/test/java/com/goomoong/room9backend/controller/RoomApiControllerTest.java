@@ -161,6 +161,8 @@ public class RoomApiControllerTest {
                 .detailLocation("서울")
                 .rule("상세페이지 들어가기 전 간단한 정보만 표기합니다.")
                 .charge(1000)
+                .disinfectionCount(7)
+                .disinfectionRank("우수")
                 .liked(3).build();
 
         Room room2 = Room.builder()
@@ -466,6 +468,8 @@ public class RoomApiControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("숙소 소개글 본문"),
                                 fieldWithPath("rule").type(JsonFieldType.STRING).description("숙소 규칙"),
                                 fieldWithPath("charge").type(JsonFieldType.NUMBER).description("제한 인원 초과시 추가요금"),
+                                fieldWithPath("disinfectionCount").type(JsonFieldType.NUMBER).description("한달동안 방역 횟수"),
+                                fieldWithPath("disinfectionRank").type(JsonFieldType.STRING).description("방역 횟수에 따른 등급"),
                                 fieldWithPath("avgScore").type(JsonFieldType.NUMBER).description("숙소 댓글 평점 평균"),
                                 fieldWithPath("reviewCount").type(JsonFieldType.NUMBER).description("숙소 댓글 수"),
                                 fieldWithPath("room_configuration[].confType").type(JsonFieldType.STRING).description("숙소 구성요소 타입(ex 화장실, 침실...)"),
@@ -491,6 +495,8 @@ public class RoomApiControllerTest {
                 .andExpect(jsonPath("$.content").value("내용1입니다."))
                 .andExpect(jsonPath("$.rule").value("상세페이지 들어가기 전 간단한 정보만 표기합니다."))
                 .andExpect(jsonPath("$.charge").value(1000))
+                .andExpect(jsonPath("$.disinfectionCount").value(7))
+                .andExpect(jsonPath("$.disinfectionRank").value("우수"))
                 .andExpect(jsonPath("$.avgScore").value(0.0))
                 .andExpect(jsonPath("$.reviewCount").value(0))
                 .andExpect(jsonPath("$.room_configuration[0].confType").value("화장실"))

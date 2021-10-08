@@ -543,14 +543,17 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 154
+Content-Length: 260
 
 {
   "data" : [ {
     "id" : 1,
-    "reviewContent" : "test",
-    "reviewCreated" : null,
-    "reviewUpdated" : null,
+    "name" : "mock1",
+    "nickname" : "mockusername1",
+    "thumbnailImgUrl" : null,
+    "reviewContent" : "test1",
+    "reviewCreated" : "2021-10-08",
+    "reviewUpdated" : "2021-10-08",
     "reviewScore" : 1
   } ]
 }</code></pre>
@@ -579,18 +582,33 @@ Content-Length: 154
 <td class="tableblock halign-left valign-top"><p class="tableblock">ID</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].nickname</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">닉네임</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].thumbnailImgUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">아바타 이미지 url</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].reviewContent</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">내용</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].reviewCreated</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">생성 시각</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].reviewUpdated</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">수정 시각</p></td>
 </tr>
 <tr>
@@ -624,27 +642,36 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 418
+Content-Length: 742
 
 {
   "data" : [ {
     "id" : 3,
-    "reviewContent" : null,
-    "reviewCreated" : null,
-    "reviewUpdated" : null,
-    "reviewScore" : 0
+    "name" : "mock3",
+    "nickname" : "mockusername3",
+    "thumbnailImgUrl" : null,
+    "reviewContent" : "test3",
+    "reviewCreated" : "2021-10-10",
+    "reviewUpdated" : "2021-10-10",
+    "reviewScore" : 3
   }, {
     "id" : 2,
-    "reviewContent" : null,
-    "reviewCreated" : null,
-    "reviewUpdated" : null,
-    "reviewScore" : 0
+    "name" : "mock2",
+    "nickname" : "mockusername2",
+    "thumbnailImgUrl" : null,
+    "reviewContent" : "test2",
+    "reviewCreated" : "2021-10-09",
+    "reviewUpdated" : "2021-10-09",
+    "reviewScore" : 2
   }, {
     "id" : 1,
-    "reviewContent" : null,
-    "reviewCreated" : null,
-    "reviewUpdated" : null,
-    "reviewScore" : 0
+    "name" : "mock1",
+    "nickname" : "mockusername1",
+    "thumbnailImgUrl" : null,
+    "reviewContent" : "test1",
+    "reviewCreated" : "2021-10-08",
+    "reviewUpdated" : "2021-10-08",
+    "reviewScore" : 1
   } ]
 }</code></pre>
 </div>
@@ -672,18 +699,33 @@ Content-Length: 418
 <td class="tableblock halign-left valign-top"><p class="tableblock">ID</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].reviewContent</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].nickname</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">닉네임</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].thumbnailImgUrl</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">아바타 이미지 url</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].reviewContent</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">내용</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].reviewCreated</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">생성 시각</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].reviewUpdated</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">수정 시각</p></td>
 </tr>
 <tr>
@@ -705,11 +747,11 @@ Content-Length: 418
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/reviews HTTP/1.1
 Content-Type: application/json
-Content-Length: 88
+Authorization: Bearer accessToken
+Content-Length: 71
 Host: room9.docs.com
 
 {
-  "userId" : 1,
   "roomId" : 1,
   "reviewContent" : "test",
   "reviewScore" : 1
@@ -733,11 +775,6 @@ Host: room9.docs.com
 </tr>
 </thead>
 <tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">유저 ID</p></td>
-</tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>roomId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
@@ -808,6 +845,7 @@ Content-Length: 16
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/v1/reviews/1 HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer accessToken
 Content-Length: 55
 Host: room9.docs.com
 
@@ -920,6 +958,7 @@ Content-Length: 16
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/v1/reviews/1 HTTP/1.1
+Authorization: Bearer accessToken
 Host: room9.docs.com</code></pre>
 </div>
 </div>
@@ -963,7 +1002,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2021-09-19 18:25:32 +0900
+Last updated 2021-10-08 17:35:43 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

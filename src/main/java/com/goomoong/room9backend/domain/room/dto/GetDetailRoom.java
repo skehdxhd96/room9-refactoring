@@ -23,6 +23,8 @@ public class GetDetailRoom extends GetCommonRoom {
     private String content;
     private String rule;
     private int charge; // 추가요금
+    private Integer disinfectionCount;
+    private String disinfectionRank;
 
     private List<confDto> room_configuration = new ArrayList<>();
     private List<amenityDto> room_amenity = new ArrayList<>();
@@ -43,6 +45,8 @@ public class GetDetailRoom extends GetCommonRoom {
         this.content = room.getContent();
         this.rule = room.getRule();
         this.charge = room.getCharge();
+        this.disinfectionCount = room.getDisinfectionCount();
+        this.disinfectionRank = room.getDisinfectionRank();
         this.userImg = room.getUsers().getThumbnailImgUrl();
         this.userIntro = room.getUsers().getIntro();
         this.userGender = room.getUsers().getGender();
