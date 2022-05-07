@@ -2,7 +2,6 @@ package com.goomoong.room9backend.domain.room.dto;
 
 import com.goomoong.room9backend.domain.room.Amenity;
 import lombok.*;
-import org.jetbrains.annotations.NotNull;
 
 @Getter
 @Setter

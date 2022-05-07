@@ -2,7 +2,6 @@ package com.goomoong.room9backend.domain.room.dto;
 
 import com.goomoong.room9backend.domain.room.Amenity;
 import lombok.*;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -23,6 +22,8 @@ public class CreatedRequestRoomDto {
 
     //images
     private List<MultipartFile> images;
+
+    private reUserDto reUserDto;
 
     //room
     private int limit; // 제한인원

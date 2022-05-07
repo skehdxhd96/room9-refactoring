@@ -3,6 +3,7 @@ package com.goomoong.room9backend.domain.user;
 import com.goomoong.room9backend.domain.chat.ChatRoom;
 import com.goomoong.room9backend.domain.reservation.roomReservation;
 import com.goomoong.room9backend.domain.room.Room;
+import com.goomoong.room9backend.domain.room.dto.reUserDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -67,6 +68,20 @@ public class User {
         this.birthday = birthday;
         this.gender = gender;
         this.intro = intro;
+    }
+
+    @Builder
+    public User(reUserDto userDto) {
+        this.id = userDto.getId();
+        this.accountId = userDto.getAccountId();
+        this.name = userDto.getName();
+        this.nickname = userDto.getNickname();
+        this.role = userDto.getRole();
+        this.thumbnailImgUrl = userDto.getThumbnailImgUrl();
+        this.email = userDto.getEmail();
+        this.birthday = userDto.getBirthday();
+        this.gender = userDto.getGender();
+        this.intro = userDto.getIntro();
     }
 
     public void update(String nickname, String thumbnailImgUrl, String email, String birthday, String gender, String intro) {

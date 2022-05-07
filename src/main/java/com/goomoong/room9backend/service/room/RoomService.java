@@ -54,11 +54,11 @@ public class RoomService {
 
     //방 생성
     @Transactional
-    public Long addRoom(CreatedRequestRoomDto request, User user) throws IOException {
+    public Long addRoom(CreatedRequestRoomDto request) {
 
         Set<RoomConfiguration> roomConfig = RoomConfiguration.createRoomConfig(request.getConf());
         Set<Amenity> amenities = Amenity.createRoomFacility(request.getFacilities());
-
+        User user = new User(request.getReUserDto());
         if(user.getRole() != Role.HOST) {
             throw new RoomNotAddException();
         }

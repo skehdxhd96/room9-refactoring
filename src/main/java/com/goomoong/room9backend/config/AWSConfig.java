@@ -17,31 +17,31 @@ import software.amazon.awssdk.services.s3.S3Client;
 
 @Configuration
 public class AWSConfig {
-//
-//    @Value("${cloud.aws.credentials.access-key}")
-//    private String accessKey;
-//
-//    @Value("${cloud.aws.credentials.secret-key}")
-//    private String secretKey;
-//
-//    @Value("${cloud.aws.region.static}")
-//    private String region;
-//
-//    @Bean
-//    public AmazonS3Client amazonS3Client() {
-//        BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
-//        return (AmazonS3Client) AmazonS3ClientBuilder.standard()
-//                .withRegion(region)
-//                .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
-//                .build();
-//    }
+
+    @Value("${cloud.aws.credentials.access-key}")
+    private String accessKey;
+
+    @Value("${cloud.aws.credentials.secret-key}")
+    private String secretKey;
+
+    @Value("${cloud.aws.region.static}")
+    private String region;
 
     @Bean
-    public S3Client getS3Client() {
-
-        return S3Client.builder()
-                .region(Region.AP_NORTHEAST_2)
-                .credentialsProvider(EnvironmentVariableCredentialsProvider.create())
+    public AmazonS3Client amazonS3Client() {
+        BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
+        return (AmazonS3Client) AmazonS3ClientBuilder.standard()
+                .withRegion(region)
+                .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
                 .build();
     }
+
+//    @Bean
+//    public S3Client getS3Client() {
+//
+//        return S3Client.builder()
+//                .region(Region.AP_NORTHEAST_2)
+//                .credentialsProvider(EnvironmentVariableCredentialsProvider.create())
+//                .build();
+//    }
 }

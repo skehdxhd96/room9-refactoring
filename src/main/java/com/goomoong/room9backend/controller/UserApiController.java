@@ -2,10 +2,8 @@ package com.goomoong.room9backend.controller;
 
 import com.goomoong.room9backend.domain.user.User;
 import com.goomoong.room9backend.domain.user.dto.*;
-import com.goomoong.room9backend.security.userdetails.CustomUserDetails;
 import com.goomoong.room9backend.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,21 +25,21 @@ public class UserApiController {
         return new AllUsersResponseDto(allUsers);
     }
 
-    @GetMapping("/api/v1/users/info")
-    public UserResponseDto getUserInfoByToken(@AuthenticationPrincipal CustomUserDetails currentUser) {
-        User findUser = userService.findById(currentUser.getId());
-
-        return UserResponseDto.builder()
-                .id(findUser.getId())
-                .nickname(findUser.getNickname())
-                .role(findUser.getRole())
-                .thumbnailImgUrl(findUser.getThumbnailImgUrl())
-                .email(findUser.getEmail())
-                .birthday(findUser.getBirthday())
-                .gender(findUser.getGender())
-                .intro(findUser.getIntro())
-                .build();
-    }
+//    @GetMapping("/api/v1/users/info")
+//    public UserResponseDto getUserInfoByToken(@AuthenticationPrincipal CustomUserDetails currentUser) {
+//        User findUser = userService.findById(currentUser.getId());
+//
+//        return UserResponseDto.builder()
+//                .id(findUser.getId())
+//                .nickname(findUser.getNickname())
+//                .role(findUser.getRole())
+//                .thumbnailImgUrl(findUser.getThumbnailImgUrl())
+//                .email(findUser.getEmail())
+//                .birthday(findUser.getBirthday())
+//                .gender(findUser.getGender())
+//                .intro(findUser.getIntro())
+//                .build();
+//    }
 
     @GetMapping("/api/v1/users/{id}")
     public UserResponseDto getUserInfo(@PathVariable Long id) {

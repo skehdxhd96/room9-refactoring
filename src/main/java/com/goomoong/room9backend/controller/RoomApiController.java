@@ -2,7 +2,6 @@ package com.goomoong.room9backend.controller;
 
 import com.goomoong.room9backend.domain.room.Room;
 import com.goomoong.room9backend.domain.user.User;
-import com.goomoong.room9backend.security.userdetails.CustomUserDetails;
 import com.goomoong.room9backend.service.ReviewService;
 import com.goomoong.room9backend.service.room.RoomSearchService;
 import com.goomoong.room9backend.service.room.RoomService;
@@ -10,8 +9,6 @@ import com.goomoong.room9backend.domain.room.dto.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.AuthenticatedPrincipal;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,9 +28,8 @@ public class RoomApiController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/room/create")
-    public CreatedResponseRoomDto createdRoom(@Valid CreatedRequestRoomDto request,
-                                              @AuthenticationPrincipal CustomUserDetails currentUser) throws IOException{
-        return new CreatedResponseRoomDto(roomService.addRoom(request, currentUser.getUser()));
+    public CreatedResponseRoomDto createdRoom(@Valid CreatedRequestRoomDto request) {
+        return new CreatedResponseRoomDto(roomService.addRoom(request));
     }
 
     @GetMapping("/room")
@@ -43,16 +39,16 @@ public class RoomApiController {
         return new roomData.GET<>(allRooms.size(), allRooms);
     }
 
-    @GetMapping("/room/{roomId}")
-    public GetDetailRoom getDetailRoom(@PathVariable("roomId") Long id, @AuthenticationPrincipal CustomUserDetails currentUser) {
-        return roomService.getRoomDetail(id, currentUser.getUser());
-    }
+//    @GetMapping("/room/{roomId}")
+//    public GetDetailRoom getDetailRoom(@PathVariable("roomId") Long id, @AuthenticationPrincipal CustomUserDetails currentUser) {
+//        return roomService.getRoomDetail(id, currentUser.getUser());
+//    }
 
-    @GetMapping("/room/myRoom")
-    public roomData.GET<List<GetCommonRoom>> getMyRoomList(@AuthenticationPrincipal CustomUserDetails currentUser) {
-        List<GetCommonRoom> myRooms = roomService.getMyRoom(currentUser.getUser());
-        return new roomData.GET<>(myRooms.size(), myRooms);
-    }
+//    @GetMapping("/room/myRoom")
+//    public roomData.GET<List<GetCommonRoom>> getMyRoomList(@AuthenticationPrincipal CustomUserDetails currentUser) {
+//        List<GetCommonRoom> myRooms = roomService.getMyRoom(currentUser.getUser());
+//        return new roomData.GET<>(myRooms.size(), myRooms);
+//    }
 
     @GetMapping("/room/search")
     public roomData.GET<List<GetCommonRoom>> getRoomWithFilter(@Valid searchDto search) {
@@ -82,15 +78,15 @@ public class RoomApiController {
         return new roomData.GET<>(roomList.size(), roomList);
     }
 
-    @PostMapping("/room/good/{roomId}")
-    public roomData.liked addRoomGood(@PathVariable("roomId") Long id, @AuthenticationPrincipal CustomUserDetails currentUser) {
-        return roomService.AboutGoodToRoom(id, currentUser.getUser());
-    }
-
-    @GetMapping("/room/MyWish")
-    public roomData.GET<List<GetCommonRoom>> getMyWishList(@AuthenticationPrincipal CustomUserDetails currentUser) {
-        List<GetCommonRoom> roomList = roomService.getRoomWithGood(currentUser.getUser());
-
-        return new roomData.GET<>(roomList.size(), roomList);
-    }
+//    @PostMapping("/room/good/{roomId}")
+//    public roomData.liked addRoomGood(@PathVariable("roomId") Long id, @AuthenticationPrincipal CustomUserDetails currentUser) {
+//        return roomService.AboutGoodToRoom(id, currentUser.getUser());
+//    }
+//
+//    @GetMapping("/room/MyWish")
+//    public roomData.GET<List<GetCommonRoom>> getMyWishList(@AuthenticationPrincipal CustomUserDetails currentUser) {
+//        List<GetCommonRoom> roomList = roomService.getRoomWithGood(currentUser.getUser());
+//
+//        return new roomData.GET<>(roomList.size(), roomList);
+//    }
 }

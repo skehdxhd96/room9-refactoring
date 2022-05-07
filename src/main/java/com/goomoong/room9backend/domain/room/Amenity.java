@@ -3,7 +3,6 @@ package com.goomoong.room9backend.domain.room;
 import com.goomoong.room9backend.domain.room.dto.amenityDto;
 import com.goomoong.room9backend.exception.RoomConfException;
 import lombok.*;
-import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.util.*;
